@@ -45,8 +45,6 @@ class Book(models.Model):
     display_genre.short_description = 'Genre'
 
 
-
-
 class BookInstance(models.Model):
     """Model representing a specific copy of a book (i.e. that can be borrowed from the library)."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
