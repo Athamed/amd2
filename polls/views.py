@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views import generic
 
 # def home(request):
 #    return render(request, 'home.html', {})
@@ -65,3 +68,8 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
 
     def get_queryset(self):
         return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
+
+class SignUpView(generic.CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy("login")
+    template_name = "registration/signup.html"
