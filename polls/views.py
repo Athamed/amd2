@@ -7,14 +7,14 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from polls import RenewBookForm
+from polls.forms import RenewBookForm
 from .models import Book, Author, BookInstance
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from polls import Author
+from polls.models import Author
 
 
 def index(request):
