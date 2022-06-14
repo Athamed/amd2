@@ -6,7 +6,9 @@ from datetime import date
 
 
 # Create your models here.
-
+# todo class FilmSeriesGenre
+# todo class FilmSeries
+# bruh
 class Genre(models.Model):
     """Model representing a book genre."""
     name = models.CharField(max_length=200, help_text='Enter a book genre (e.g. Science Fiction)')
