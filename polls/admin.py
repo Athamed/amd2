@@ -1,13 +1,16 @@
 from django.contrib import admin
-from .models import Author, Genre, Book, BookInstance, Language
+from .models import Author, Genre, GameGenre,GameMode, Book, BookInstance, Language, Game
 
 # admin.site.register(Author, AuthorAdmin)
 # admin.site.register(Book)
 # admin.site.register(Author)
 # admin.site.register(BookInstance)
 admin.site.register(Genre)
-admin.site.register(Language)
+admin.site.register(GameGenre)
+admin.site.register(GameMode)
 
+admin.site.register(Language)
+admin.site.register(Game)
 
 class BooksInline(admin.TabularInline):
     """Defines format of inline book insertion (used in AuthorAdmin)"""
