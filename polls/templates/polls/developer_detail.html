@@ -1,7 +1,9 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-
+    {% if user.is_authenticated %}
+  <p style="text-align:center">Chcesz usunąć dewelopera: <a href="{% url 'developer-delete' developer.id %}">Klik</a></p>
+  {% endif %}
 <h1>Developer: {{ developer }} </h1>
 <p>{{developer.date_of_foundation}}</p>
 

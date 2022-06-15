@@ -67,13 +67,15 @@ class AuthorDetailView(generic.DetailView):
 
 
 class DeveloperDetailView(generic.DetailView):
-    """Generic class-based detail view for an author."""
+    """Generic class-based detail view for a developer."""
     model = Developer
+    template_name = 'polls/developer_detail.html'
 
 
 class GameDetailView(generic.DetailView):
-    """Generic class-based detail view for an author."""
+    """Generic class-based detail view for a game."""
     model = Game
+    template_name = 'polls/game_detail.html'
 
 
 class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
@@ -171,3 +173,7 @@ class BookDelete(DeleteView):
 class GameDelete(DeleteView):
     model = Game
     success_url = reverse_lazy('games')
+
+class DeveloperDelete(DeleteView):
+    model = Developer
+    success_url = reverse_lazy('developers')

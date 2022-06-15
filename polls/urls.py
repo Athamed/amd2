@@ -23,5 +23,6 @@ urlpatterns = [
     path('game/<int:pk>', views.GameDetailView.as_view(), name='game-detail'),
     path('game/<int:pk>/delete/', views.GameDelete.as_view(), name='game-delete'),
     path('developer/<int:pk>', views.DeveloperDetailView.as_view(), name='developer-detail'),
+    path('developer/<int:pk>/delete', views.DeveloperDelete.as_view(), name='developer-delete'),
 
 ]
