@@ -63,6 +63,10 @@ class Game(models.Model):
         """String for representing the Model object."""
         return self.title
 
+    def get_absolute_url(self):
+        """Returns the URL to access a detail record for this game."""
+        return reverse('game-detail', args=[str(self.id)])
+
 
 
 class Book(models.Model):
@@ -164,7 +168,7 @@ class Developer(models.Model):
         ordering = ['company_name']
 
     def get_absolute_url(self):
-        """Returns the URL to access a particular author instance."""
+        """Returns the URL to access a particular developer instance."""
         return reverse('developer-detail', args=[str(self.id)])
 
     def __str__(self):

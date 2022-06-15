@@ -172,8 +172,10 @@ class BookDelete(DeleteView):
 
 class GameDelete(DeleteView):
     model = Game
-    success_url = reverse_lazy('games')
+    success_url = reverse_lazy('books')
 
 class DeveloperDelete(DeleteView):
     model = Developer
-    success_url = reverse_lazy('developers')
+    success_url = reverse_lazy('books')
+
+#TODO Add 2 views/html files to reverse GameDelete to Games list and similar for Developer list
