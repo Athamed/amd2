@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Author, Genre, GameGenre,GameMode, Book, BookInstance, Language, Game
+from .models import Author, Genre, GameGenre,GameMode,Developer, Book, BookInstance, Language, Game
 
 # admin.site.register(Author, AuthorAdmin)
 # admin.site.register(Book)
@@ -8,6 +8,7 @@ from .models import Author, Genre, GameGenre,GameMode, Book, BookInstance, Langu
 admin.site.register(Genre)
 admin.site.register(GameGenre)
 admin.site.register(GameMode)
+admin.site.register(Developer)
 
 admin.site.register(Language)
 admin.site.register(Game)

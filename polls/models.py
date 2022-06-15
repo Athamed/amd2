@@ -50,16 +50,18 @@ class GameMode(models.Model):
 class Game(models.Model):
     """Model representing a game (but not a specific game)."""
     title = models.CharField(max_length=200)
-    developer = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
+    developer = models.ForeignKey('Developer', on_delete=models.SET_NULL, null=True)
     date_of_release = models.DateField(null=True, blank=True)
 
     genre = models.ManyToManyField(GameGenre, help_text='Select a genre for this game')
     mode = models.ManyToManyField(GameMode, help_text='Select which game mode is available')
     # Nwm czy to jest sens tu trzymać z language
     # language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
-
     summary = models.TextField(max_length=1000, help_text='Enter a brief description of the game')
 
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.title
 
 
 
@@ -150,3 +152,21 @@ class Author(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.last_name}, {self.first_name}'
+
+
+
+class Developer(models.Model):
+    """Model representing an Developer."""
+    company_name = models.CharField(max_length=100)
+    date_of_foundation = models.DateField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['company_name']
+
+    def get_absolute_url(self):
+        """Returns the URL to access a particular author instance."""
+        return reverse('developer-detail', args=[str(self.id)])
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return f'{self.company_name}'

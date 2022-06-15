@@ -8,13 +8,13 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from polls.forms import RenewBookForm
-from .models import Book, Author, BookInstance
+from .models import Book, Author, BookInstance, Game, Developer
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from polls.models import Author
+
 
 
 def index(request):
@@ -64,6 +64,10 @@ class AuthorListView(generic.ListView):
 class AuthorDetailView(generic.DetailView):
     """Generic class-based detail view for an author."""
     model = Author
+
+class DeveloperDetailView(generic.DetailView):
+    """Generic class-based detail view for an author."""
+    model = Developer
 
 
 class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
@@ -156,3 +160,8 @@ class BookUpdate(UpdateView):
 class BookDelete(DeleteView):
     model = Book
     success_url = reverse_lazy('books')
+
+class GameDelete(DeleteView):
+    model = Game
+    success_url = reverse_lazy('games')
+

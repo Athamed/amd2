@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Developer: {{ developer }} </h1>
+<p>{{developer.date_of_foundation}}</p>
+
+<div style="margin-left:20px;margin-top:20px">
+<h4>Games</h4>
+
+<dl>
+{% for game in developer.game_set.all %}
+    <p><b>{{game}} </b> - {{game.summary}}</p>
+    {# some text  <p><a href="{% url 'game-detail' game.pk %}">{{game}}</a> - {{game.summary}}</p> #}
+    {# TODO ten syf wyzej #}
+{% endfor %}
+</dl>
+
+</div>
+{% endblock %}
