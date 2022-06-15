@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Title: {{ game.title }}</h1>
+  <p><strong>Developer:</strong> <a href="{% url 'developer-detail' game.developer_id %}">{{game.developer}}</a></p>
+  <p><strong>Game genre:</strong> {{ game.genre.all|join:", " }}</p>
+  <p><strong>Release Date:</strong> {{ game.date_of_release }}</p>
+  <p><strong>Game mode:</strong> {{ game.mode.all|join:", " }}</p>
+  <p><strong>Brief summary:</strong> {{ game.summary }}</p>
+
+
+{% endblock %}

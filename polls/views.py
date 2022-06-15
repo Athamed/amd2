@@ -69,6 +69,10 @@ class DeveloperDetailView(generic.DetailView):
     """Generic class-based detail view for an author."""
     model = Developer
 
+class GameDetailView(generic.DetailView):
+    """Generic class-based detail view for an author."""
+    model = Game
+
 
 class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
     """Generic class-based view listing books on loan to current user."""

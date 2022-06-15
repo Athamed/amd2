@@ -11,8 +11,8 @@
 <dl>
 {% for game in developer.game_set.all %}
     <p><b>{{game}} </b> - {{game.summary}}</p>
-    {# some text  <p><a href="{% url 'game-detail' game.pk %}">{{game}}</a> - {{game.summary}}</p> #}
-    {# TODO ten syf wyzej #}
+    <p><a href="{% url 'game-detail' game.pk %}">{{game}}</a> - {{game.summary}}</p>
+
 {% endfor %}
 </dl>
 
