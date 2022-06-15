@@ -13,8 +13,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-
-
+from django.utils.decorators import method_decorator
 
 
 def index(request):
@@ -55,6 +54,7 @@ class BookDetailView(generic.DetailView):
     model = Book
 
 
+#@method_decorator(login_required, name='dispatch')
 class AuthorListView(generic.ListView):
     """Generic class-based list view for a list of authors."""
     model = Author
@@ -65,9 +65,11 @@ class AuthorDetailView(generic.DetailView):
     """Generic class-based detail view for an author."""
     model = Author
 
+
 class DeveloperDetailView(generic.DetailView):
     """Generic class-based detail view for an author."""
     model = Developer
+
 
 class GameDetailView(generic.DetailView):
     """Generic class-based detail view for an author."""
@@ -165,7 +167,7 @@ class BookDelete(DeleteView):
     model = Book
     success_url = reverse_lazy('books')
 
+
 class GameDelete(DeleteView):
     model = Game
     success_url = reverse_lazy('games')
-
