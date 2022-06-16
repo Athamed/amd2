@@ -2,11 +2,11 @@
 
 {% block content %}
 
-    <h1> Title: {{ filmseries.title }} </h1>
+    <h1> Title: {{ movie.title }} </h1>
     <ul>
         <li>Directors:
             <ul>
-                {% for director in filmseries.director.all %}
+                {% for director in movie.director.all %}
                     <a href="{{ director.get_absolute_url }}">
                         <li>{{ director }}</li>
                     </a>
@@ -16,21 +16,29 @@
         </li>
         <li>Actors:
             <ul>
-                {% for actor in filmseries.actors.all %}
+                {% for actor in movie.actors.all %}
                     <a href="{{ actor.get_absolute_url }}">
                         <li>{{ actor }}</li>
                     </a>
                 {% endfor %}
             </ul>
         </li>
+        <li>Genres:
+            <ul>
+                {% for genre in movie.genre.all %}
+                    <li>{{ genre }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>Running time: {{ movie.running_time }} minutes</li>
         <li>Language:
             <ul>
-                {% for language in filmseries.language.all %}
+                {% for language in movie.language.all %}
                     <li>{{ language }}</li>
                 {% endfor %}
             </ul>
         </li>
-        <li>Date of release: {{ filmseries.date_of_release }}</li>
+        <li>Date of release: {{ movie.date_of_release }}</li>
     </ul>
 
 

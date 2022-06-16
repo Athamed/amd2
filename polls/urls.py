@@ -20,8 +20,10 @@ urlpatterns = [
     path('book/<int:pk>/update/', views.BookUpdate.as_view(), name='book-update'),
     path('book/<int:pk>/delete/', views.BookDelete.as_view(), name='book-delete'),
 
-    path('filmseries/', views.FilmSeriesListView.as_view(), name='film-series'),
-    path('filmseries/<int:pk>', views.FilmSeriesDetailView.as_view(), name='film-series-detail'),
+    path('movie/', views.MovieListView.as_view(), name='movies'),
+    path('movie/<int:pk>', views.MovieDetailView.as_view(), name='movie-detail'),
+    path('series/', views.SeriesListView.as_view(), name='series'),
+    path('series/<int:pk>', views.SeriesDetailView.as_view(), name='series-detail'),
     path('actor/', views.ActorListView.as_view(), name='actors'),
     path('actor/<int:pk>', views.ActorDetailView.as_view(), name='actor-detail'),
     path('director/', views.DirectorListView.as_view(), name='directors'),

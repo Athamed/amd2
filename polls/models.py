@@ -6,10 +6,7 @@ from datetime import date
 
 
 # Create your models here.
-# todo class FilmSeriesGenre
-# todo class FilmSeries
-# todo class Director
-# bruh
+
 class Genre(models.Model):
     """Model representing a book genre."""
     name = models.CharField(max_length=200, help_text='Enter a book genre (e.g. Science Fiction)')
@@ -128,6 +125,18 @@ class Person(models.Model):
         abstract = True
 
 
+class MovieSeriesBase(models.Model):
+    title = models.TextField(max_length=100)
+    language = models.ManyToManyField('Language')
+    actors = models.ManyToManyField('Actor')
+    director = models.ManyToManyField('Director')
+    date_of_release = models.DateField()
+    genre = models.ManyToManyField('MovieSeriesGenre')
+
+    class Meta:
+        abstract = True
+
+
 class Actor(Person):
     specialisation = models.CharField(max_length=100)
 
@@ -148,22 +157,31 @@ class Director(Person):
         return f'{self.last_name}, {self.first_name}'
 
 
-class FilmSeries(models.Model):
-    title = models.TextField(max_length=100)
-    language = models.ManyToManyField('Language')
-    actors = models.ManyToManyField('Actor')
-    director = models.ManyToManyField('Director')
-    date_of_release = models.DateField()
+class Movie(MovieSeriesBase):
+    running_time = models.CharField(max_length=100, help_text="Movie length in minutes")
 
     def get_absolute_url(self):
-        return reverse('film-series-detail', args=[str(self.id)])
+        return reverse('movie-detail', args=[str(self.id)])
 
     def __str__(self):
         return self.title
 
 
-class FilmSeriesGenre(models.Model):
+class Series(MovieSeriesBase):
+    number_of_seasons = models.CharField(max_length=100, help_text="Number of seasons")
+
+    def get_absolute_url(self):
+        return reverse('series-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return self.title
+
+
+class MovieSeriesGenre(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+
+
+
