@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from polls.forms import RenewBookForm
 from .models import Book, Author, BookInstance
+from .models import FilmSeries, Actor, Director
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -44,6 +45,35 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable.
     return render(request, 'index.html', context=context)
+
+
+class FilmSeriesListView(generic.ListView):
+    template_name = "polls/film_and_series_list.html"
+    model = FilmSeries
+    paginate_by = 10
+
+
+class FilmSeriesDetailView(generic.DetailView):
+    template_name = "polls/film_and_series_detail.html"
+    model = FilmSeries
+
+
+class ActorListView(generic.ListView):
+    model = Actor
+    paginate_by = 10
+
+
+class ActorDetailView(generic.DetailView):
+    model = Actor
+
+
+class DirectorListView(generic.ListView):
+    model = Director
+    paginate_by = 10
+
+
+class DirectorDetailView(generic.DetailView):
+    model = Director
 
 
 class BookListView(generic.ListView):

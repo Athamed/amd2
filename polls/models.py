@@ -118,24 +118,28 @@ class Author(models.Model):
         return f'{self.last_name}, {self.first_name}'
 
 
-class Actor(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+class Person(models.Model):
+    first_name = models.CharField(max_length=100, default='first name')
+    last_name = models.CharField(max_length=100, default='last name')
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField(null=True, blank=True)
 
-    def __str__(self):
-        return self.first_name, self.last_name
+    class Meta:
+        abstract = True
 
 
-class Director(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    date_of_birth = models.DateField(null=True, blank=True)
-    date_of_death = models.DateField(null=True, blank=True)
+class Actor(Person):
+    specialisation = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.first_name, self.last_name
+        return f'{self.last_name}, {self.first_name}'
+
+
+class Director(Person):
+    amount_of_films = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'{self.last_name}, {self.first_name}'
 
 
 class FilmSeries(models.Model):
@@ -144,6 +148,9 @@ class FilmSeries(models.Model):
     actors = models.ManyToManyField('Actor')
     director = models.ManyToManyField('Director')
     date_of_release = models.DateField()
+
+    def get_absolute_url(self):
+        return reverse('film-series-detail', args=[str(self.id)])
 
     def __str__(self):
         return self.title

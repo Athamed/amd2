@@ -13,7 +13,6 @@ admin.site.register(FilmSeries)
 admin.site.register(FilmSeriesGenre)
 
 
-
 class BooksInline(admin.TabularInline):
     """Defines format of inline book insertion (used in AuthorAdmin)"""
     model = Book

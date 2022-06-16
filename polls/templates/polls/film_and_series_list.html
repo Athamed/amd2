@@ -1,0 +1,17 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+    <h1>Films and series list</h1>
+    {% if filmseries_list %}
+        <ul>
+            {% for film_series in filmseries_list %}
+                <li>
+                    <a href="{{ film_series.get_absolute_url }}">{{ film_series.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no films and series</p>
+    {% endif %}
+{% endblock %}
