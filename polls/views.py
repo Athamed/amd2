@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from polls.forms import RenewBookForm
+from .models import FilmSeries, Actor, Director
 from .models import Book, Author, BookInstance, Game, Developer
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -45,6 +46,39 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
+class FilmSeriesListView(generic.ListView):
+    template_name = "polls/film_and_series_list.html"
+    model = FilmSeries
+    paginate_by = 10
+
+
+class FilmSeriesDetailView(generic.DetailView):
+    template_name = "polls/film_and_series_detail.html"
+    model = FilmSeries
+
+
+class ActorListView(generic.ListView):
+    template_name = "polls/actor_list.html"
+    model = Actor
+    paginate_by = 10
+
+
+class ActorDetailView(generic.DetailView):
+    template_name = "polls/actor_detail.html"
+    model = Actor
+
+
+class DirectorListView(generic.ListView):
+    template_name = "polls/director_list.html"
+    model = Director
+    paginate_by = 10
+
+
+class DirectorDetailView(generic.DetailView):
+    template_name = "polls/director_detail.html"
+    model = Director
+
+
 class BookListView(generic.ListView):
     model = Book
     paginate_by = 10
@@ -54,7 +88,6 @@ class BookDetailView(generic.DetailView):
     model = Book
 
 
-#@method_decorator(login_required, name='dispatch')
 class AuthorListView(generic.ListView):
     """Generic class-based list view for a list of authors."""
     model = Author

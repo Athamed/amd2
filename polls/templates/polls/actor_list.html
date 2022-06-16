@@ -1,0 +1,17 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+    <h1>Actors list</h1>
+    {% if actor_list %}
+        <ul>
+            {% for actor in actor_list %}
+                <li>
+                    <a href="{{ actor.get_absolute_url }}">{{ actor.first_name }} {{ actor.last_name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no actors</p>
+    {% endif %}
+{% endblock %}

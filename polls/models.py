@@ -16,8 +16,6 @@ class Genre(models.Model):
         return self.name
 
 
-
-
 class Language(models.Model):
     """Model representing a Language (e.g. English, French, Japanese, etc.)"""
     name = models.CharField(max_length=200,
@@ -174,3 +172,54 @@ class Developer(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.company_name}'
+
+
+class Person(models.Model):
+    first_name = models.CharField(max_length=100, default='first name')
+    last_name = models.CharField(max_length=100, default='last name')
+    date_of_birth = models.DateField(null=True, blank=True)
+    date_of_death = models.DateField(null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class Actor(Person):
+    specialisation = models.CharField(max_length=100)
+
+    def get_absolute_url(self):
+        return reverse('actor-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return f'{self.last_name}, {self.first_name}'
+
+
+class Director(Person):
+    amount_of_films = models.CharField(max_length=100)
+
+    def get_absolute_url(self):
+        return reverse('director-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return f'{self.last_name}, {self.first_name}'
+
+
+class FilmSeries(models.Model):
+    title = models.TextField(max_length=100)
+    language = models.ManyToManyField('Language')
+    actors = models.ManyToManyField('Actor')
+    director = models.ManyToManyField('Director')
+    date_of_release = models.DateField()
+
+    def get_absolute_url(self):
+        return reverse('film-series-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return self.title
+
+
+class FilmSeriesGenre(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name

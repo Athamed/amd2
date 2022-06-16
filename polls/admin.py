@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Author, Genre, GameGenre,GameMode,Developer, Book, BookInstance, Language, Game
+from .models import Author, Genre, Book, BookInstance, Language, Director, Actor, FilmSeriesGenre, FilmSeries
 
 # admin.site.register(Author, AuthorAdmin)
 # admin.site.register(Book)
@@ -12,6 +13,11 @@ admin.site.register(Developer)
 
 admin.site.register(Language)
 admin.site.register(Game)
+admin.site.register(Director)
+admin.site.register(Actor)
+admin.site.register(FilmSeries)
+admin.site.register(FilmSeriesGenre)
+
 
 class BooksInline(admin.TabularInline):
     """Defines format of inline book insertion (used in AuthorAdmin)"""

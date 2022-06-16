@@ -1,0 +1,37 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <h1> Title: {{ filmseries.title }} </h1>
+    <ul>
+        <li>Directors:
+            <ul>
+                {% for director in filmseries.director.all %}
+                    <a href="{{ director.get_absolute_url }}">
+                        <li>{{ director }}</li>
+                    </a>
+
+                {% endfor %}
+            </ul>
+        </li>
+        <li>Actors:
+            <ul>
+                {% for actor in filmseries.actors.all %}
+                    <a href="{{ actor.get_absolute_url }}">
+                        <li>{{ actor }}</li>
+                    </a>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>Language:
+            <ul>
+                {% for language in filmseries.language.all %}
+                    <li>{{ language }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>Date of release: {{ filmseries.date_of_release }}</li>
+    </ul>
+
+
+{% endblock %}
