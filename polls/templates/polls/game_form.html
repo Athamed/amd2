@@ -1,0 +1,18 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+    {% if user.is_authenticated %}
+        <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit"/>
+    {% else %}
+        <p>You are not supposted to be here</p>
+    {% endif %}
+
+</form>
+{% endblock %}

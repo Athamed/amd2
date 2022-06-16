@@ -2,14 +2,15 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <h1>Delete Game</h1>
-
-        <p>Are you sure you want to delete the book: {{ game }}?</p>
-
-        <form action="" method="POST">
+        <form action="" method="post">
             {% csrf_token %}
-            <input type="submit" value="Yes, delete."/>
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="submit" value="Submit"/>
+
         </form>
+
     {% else %}
         <p>You are not supposted to be here</p>
     {% endif %}

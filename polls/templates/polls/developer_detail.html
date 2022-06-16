@@ -2,21 +2,22 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-  <p style="text-align:center">Chcesz usunąć dewelopera: <a href="{% url 'developer-delete' developer.id %}">Klik</a></p>
-  {% endif %}
-<h1>Developer: {{ developer }} </h1>
-<p>{{developer.date_of_foundation}}</p>
+        <p style="text-align:center">Chcesz usunąć dewelopera: <a
+                href="{% url 'developer-delete' developer.id %}">Klik</a></p>
+    {% endif %}
+    <h1>Developer: {{ developer }} </h1>
+    <p>{{ developer.date_of_foundation }}</p>
 
-<div style="margin-left:20px;margin-top:20px">
-<h4>Games</h4>
+    <div style="margin-left:20px;margin-top:20px">
+        <h4>Games</h4>
 
-<dl>
-{% for game in developer.game_set.all %}
-    <p><b>{{game}} </b> - {{game.summary}}</p>
-    <p><a href="{% url 'game-detail' game.pk %}">{{game}}</a> - {{game.summary}}</p>
+        <dl>
+            {% for game in developer.game_set.all %}
+                <p><b>{{ game }} </b> - {{ game.summary }}</p>
+                <p><a href="{% url 'game-detail' game.pk %}">{{ game }}</a> - {{ game.summary }}</p>
 
-{% endfor %}
-</dl>
+            {% endfor %}
+        </dl>
 
-</div>
+    </div>
 {% endblock %}

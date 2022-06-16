@@ -18,10 +18,17 @@
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'books' %}">All books</a></li>
             <li><a href="{% url 'authors' %}">All authors</a></li>
+            <li><a href="{% url 'games' %}">All games</a></li>
+            <li><a href="{% url 'developers' %}">All game dev</a></li>
+
+
         {% if user.is_authenticated %}
             <li>User: {{ user.get_username }}</li>
             <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li>
             <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+            <hr>
+            <li><a href="{% url 'game-create' %}">Add game</a></li>
+            <li><a href="{% url 'developer-create' %}">Add developer</a></li>
         {% else %}
             <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
             <li><a href="{% url 'signup'%}?next={{request.path}}">Register</a></li>

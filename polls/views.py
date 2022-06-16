@@ -158,7 +158,7 @@ class AuthorDelete(DeleteView):
 class BookCreate(CreateView):
     model = Book
     fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
-
+    template_name = "polls/book_form.html"
 
 class BookUpdate(UpdateView):
     model = Book
@@ -170,12 +170,32 @@ class BookDelete(DeleteView):
     success_url = reverse_lazy('books')
 
 
+class GameCreate(CreateView):
+    model = Game
+    fields = ['title', 'date_of_release', 'genre', 'mode', 'summary']
+    template_name = "polls/game_form.html"
+
+
 class GameDelete(DeleteView):
     model = Game
-    success_url = reverse_lazy('books')
+    success_url = reverse_lazy('games')
+
+class GameListView(generic.ListView):
+    model = Game
+    paginate_by = 10
+
 
 class DeveloperDelete(DeleteView):
     model = Developer
-    success_url = reverse_lazy('books')
+    success_url = reverse_lazy('developers')
+
+class DeveloperCreate(CreateView):
+    model = Developer
+    fields = ['company_name', 'date_of_foundation']
+    template_name = "polls/developer_form.html"
+
+class DeveloperListView(generic.ListView):
+    model = Developer
+    paginate_by = 10
 
 #TODO Add 2 views/html files to reverse GameDelete to Games list and similar for Developer list

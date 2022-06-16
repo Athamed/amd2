@@ -2,14 +2,14 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-  <p style="text-align:center">Chcesz usunąć grę: <a href="{% url 'game-delete' game.id %}">Klik</a></p>
-  {% endif %}
+        <p style="text-align:center">Chcesz usunąć grę: <a href="{% url 'game-delete' game.id %}">Klik</a></p>
+    {% endif %}
     <h1>Title: {{ game.title }}</h1>
-  <p><strong>Developer:</strong> <a href="{% url 'developer-detail' game.developer_id %}">{{game.developer}}</a></p>
-  <p><strong>Game genre:</strong> {{ game.genre.all|join:", " }}</p>
-  <p><strong>Release Date:</strong> {{ game.date_of_release }}</p>
-  <p><strong>Game mode:</strong> {{ game.mode.all|join:", " }}</p>
-  <p><strong>Brief summary:</strong> {{ game.summary }}</p>
+    <p><strong>Developer:</strong> <a href="{% url 'developer-detail' game.developer_id %}">{{ game.developer }}</a></p>
+    <p><strong>Game genre:</strong> {{ game.genre.all|join:", " }}</p>
+    <p><strong>Release Date:</strong> {{ game.date_of_release }}</p>
+    <p><strong>Game mode:</strong> {{ game.mode.all|join:", " }}</p>
+    <p><strong>Brief summary:</strong> {{ game.summary }}</p>
 
 
 {% endblock %}

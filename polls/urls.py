@@ -20,9 +20,14 @@ urlpatterns = [
     path('book/<int:pk>/update/', views.BookUpdate.as_view(), name='book-update'),
     path('book/<int:pk>/delete/', views.BookDelete.as_view(), name='book-delete'),
 
+    path('games/', views.GameListView.as_view(), name='games'),
     path('game/<int:pk>', views.GameDetailView.as_view(), name='game-detail'),
     path('game/<int:pk>/delete/', views.GameDelete.as_view(), name='game-delete'),
+    path('game/create/', views.GameCreate.as_view(), name='game-create'),
+
+    path('developers/', views.DeveloperListView.as_view(), name='developers'),
     path('developer/<int:pk>', views.DeveloperDetailView.as_view(), name='developer-detail'),
     path('developer/<int:pk>/delete', views.DeveloperDelete.as_view(), name='developer-delete'),
+    path('developer/create/', views.DeveloperCreate.as_view(), name='developer-create'),
 
 ]
