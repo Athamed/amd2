@@ -131,12 +131,18 @@ class Person(models.Model):
 class Actor(Person):
     specialisation = models.CharField(max_length=100)
 
+    def get_absolute_url(self):
+        return reverse('actor-detail', args=[str(self.id)])
+
     def __str__(self):
         return f'{self.last_name}, {self.first_name}'
 
 
 class Director(Person):
     amount_of_films = models.CharField(max_length=100)
+
+    def get_absolute_url(self):
+        return reverse('director-detail', args=[str(self.id)])
 
     def __str__(self):
         return f'{self.last_name}, {self.first_name}'

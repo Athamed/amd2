@@ -21,5 +21,9 @@ urlpatterns = [
     path('book/<int:pk>/delete/', views.BookDelete.as_view(), name='book-delete'),
 
     path('filmseries/', views.FilmSeriesListView.as_view(), name='film-series'),
-    path('filmseries/<int:pk>', views.FilmSeriesDetailView.as_view(), name='film-series-detail')
+    path('filmseries/<int:pk>', views.FilmSeriesDetailView.as_view(), name='film-series-detail'),
+    path('actor/', views.ActorListView.as_view(), name='actors'),
+    path('actor/<int:pk>', views.ActorDetailView.as_view(), name='actor-detail'),
+    path('director/', views.DirectorListView.as_view(), name='directors'),
+    path('director/<int:pk>', views.DirectorDetailView.as_view(), name='director-detail')
 ]

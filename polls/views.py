@@ -59,20 +59,24 @@ class FilmSeriesDetailView(generic.DetailView):
 
 
 class ActorListView(generic.ListView):
+    template_name = "polls/actor_list.html"
     model = Actor
     paginate_by = 10
 
 
 class ActorDetailView(generic.DetailView):
+    template_name = "polls/actor_detail.html"
     model = Actor
 
 
 class DirectorListView(generic.ListView):
+    template_name = "polls/director_list.html"
     model = Director
     paginate_by = 10
 
 
 class DirectorDetailView(generic.DetailView):
+    template_name = "polls/director_detail.html"
     model = Director
 
 
