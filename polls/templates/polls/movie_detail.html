@@ -40,6 +40,9 @@
         </li>
         <li>Date of release: {{ movie.date_of_release }}</li>
     </ul>
+    {% if user.is_superuser %}
+    <a href="{% url 'movie-delete' pk=movie.id %}"><button>DELETE MOVIE</button></a>
+    {% endif %}
 
 
 {% endblock %}

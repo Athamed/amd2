@@ -58,6 +58,18 @@ class MovieDetailView(generic.DetailView):
     model = Movie
 
 
+class MovieDelete(DeleteView):
+    model = Movie
+    template_name = "polls/movie_delete.html"
+    success_url = reverse_lazy('movies')
+
+
+class MovieCreate(CreateView):
+    model = Movie
+    template_name = "polls/movie_create.html"
+    fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
+
+
 class SeriesListView(generic.ListView):
     template_name = "polls/series_list.html"
     model = Series
@@ -67,6 +79,18 @@ class SeriesListView(generic.ListView):
 class SeriesDetailView(generic.DetailView):
     template_name = "polls/series_detail.html"
     model = Series
+
+
+class SeriesDelete(DeleteView):
+    model = Series
+    template_name = ""
+    success_url = reverse_lazy('series')
+
+
+class SeriesCreate(CreateView):
+    model = Series
+    template_name = "polls/series_create.html"
+    fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'number_of_seasons']
 
 
 class ActorListView(generic.ListView):
@@ -80,6 +104,18 @@ class ActorDetailView(generic.DetailView):
     model = Actor
 
 
+class ActorDelete(DeleteView):
+    model = Actor
+    template_name = ""
+    success_url = reverse_lazy('actors')
+
+
+class ActorCreate(CreateView):
+    model = Actor
+    template_name = "polls/actor_create.html"
+    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'specialisation']
+
+
 class DirectorListView(generic.ListView):
     template_name = "polls/director_list.html"
     model = Director
@@ -89,6 +125,18 @@ class DirectorListView(generic.ListView):
 class DirectorDetailView(generic.DetailView):
     template_name = "polls/director_detail.html"
     model = Director
+
+
+class DirectorDelete(DeleteView):
+    model = Director
+    template_name = ""
+    success_url = reverse_lazy('directors')
+
+
+class DirectorCreate(CreateView):
+    model = Director
+    template_name = "polls/director_create.html"
+    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'amount_of_films']
 
 
 class BookListView(generic.ListView):

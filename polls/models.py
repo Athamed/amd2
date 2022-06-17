@@ -116,8 +116,8 @@ class Author(models.Model):
 
 
 class Person(models.Model):
-    first_name = models.CharField(max_length=100, default='first name')
-    last_name = models.CharField(max_length=100, default='last name')
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField(null=True, blank=True)
 
@@ -126,7 +126,7 @@ class Person(models.Model):
 
 
 class MovieSeriesBase(models.Model):
-    title = models.TextField(max_length=100)
+    title = models.CharField(max_length=100)
     language = models.ManyToManyField('Language')
     actors = models.ManyToManyField('Actor')
     director = models.ManyToManyField('Director')
@@ -144,7 +144,7 @@ class Actor(Person):
         return reverse('actor-detail', args=[str(self.id)])
 
     def __str__(self):
-        return f'{self.last_name}, {self.first_name}'
+        return f'{self.first_name} {self.last_name}'
 
 
 class Director(Person):
@@ -154,7 +154,7 @@ class Director(Person):
         return reverse('director-detail', args=[str(self.id)])
 
     def __str__(self):
-        return f'{self.last_name}, {self.first_name}'
+        return f'{self.first_name} {self.last_name}'
 
 
 class Movie(MovieSeriesBase):
