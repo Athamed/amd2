@@ -2,15 +2,40 @@
 
 {% block content %}
 
-    <h1>Game List</h1>
+    <h1>Verified games (games list) </h1>
 
     {% if game_list %}
         <ul>
 
             {% for game in game_list %}
-                <li>
-                    <a href="{{ game.get_absolute_url }}">{{ game }}</a> (Studia {{ game.developer }})
-                </li>
+                {% if game.Verified == True %}
+
+                    <li>
+                        <a href="{{ game.get_absolute_url }}">{{ game }}</a> (Studia {{ game.developer }})
+                    </li>
+                {% endif %}
+
+
+
+
+
+            {% endfor %}
+        </ul>
+        {% if user.is_superuser %}
+            <h1>Games to verify</h1>
+        {% endif %}
+
+        <ul>
+
+
+            {% for game in game_list %}
+
+                {% if user.is_superuser and game.Verified == False %}
+                    <li>
+                        <a href="{{ game.get_absolute_url }}">{{ game }}</a> (Studia {{ game.developer }})
+                    </li>
+                {% endif %}
+
             {% endfor %}
 
         </ul>

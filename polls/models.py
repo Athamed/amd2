@@ -58,6 +58,7 @@ class Game(models.Model):
     # Nwm czy to jest sens tu trzymać z language
     # language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
     summary = models.TextField(max_length=1000, help_text='Enter a brief description of the game')
+    Verified = models.BooleanField(default=False)
 
     def __str__(self):
         """String for representing the Model object."""
@@ -66,6 +67,17 @@ class Game(models.Model):
     def get_absolute_url(self):
         """Returns the URL to access a detail record for this game."""
         return reverse('game-detail', args=[str(self.id)])
+
+    def Verify(self, *args, **kwargs):
+        self.Verified = True
+        self.save(update_fields=['Verified'])
+        return self.Verified
+    def Unverify(self, *args, **kwargs):
+        self.Verified = False
+        self.save(update_fields=['Verified'])
+        return self.Verified
+
+
 
 
 

@@ -23,6 +23,9 @@ urlpatterns = [
     path('games/', views.GameListView.as_view(), name='games'),
     path('game/<int:pk>', views.GameDetailView.as_view(), name='game-detail'),
     path('game/<int:pk>/delete/', views.GameDelete.as_view(), name='game-delete'),
+    path('game/<int:pk>/verify/', views.GameVerify.as_view(), name='game-verify'),
+    path('game/<int:pk>/unverify/', views.GameUnverify.as_view(), name='game-unverify'),
+
     path('game/create/', views.GameCreate.as_view(), name='game-create'),
 
     path('developers/', views.DeveloperListView.as_view(), name='developers'),

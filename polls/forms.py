@@ -1,9 +1,28 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 import datetime  # for checking renewal date range.
-
 from django import forms
+from .models import Game
 
+
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
+class GameForm(forms.ModelForm):
+    class Meta:
+        model = Game
+        fields = ('title','developer','date_of_release','genre','mode','summary')
+        #fields = ('title','developer','date_of_release')
+
+        widgets ={'title':  forms.TextInput(attrs={'class': 'form-control','placeholder':'tytul'}),
+                 'developer': forms.Select(attrs={'class': 'form-control'}),
+                 'date_of_release': DateInput(),
+                 'genre': forms.SelectMultiple(attrs={'class': 'form-control'}),
+                 'mode': forms.Select(attrs={'class': 'form-control'}),
+                 'summary': forms.Textarea(attrs={'class': 'form-control'}),
+                 }
 
 class RenewBookForm(forms.Form):
     """Form for a librarian to renew books."""

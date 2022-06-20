@@ -14,7 +14,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-
+from django.shortcuts import render
+from .forms import GameForm
 
 def index(request):
     """View function for home page of site."""
@@ -54,7 +55,7 @@ class BookDetailView(generic.DetailView):
     model = Book
 
 
-#@method_decorator(login_required, name='dispatch')
+# @method_decorator(login_required, name='dispatch')
 class AuthorListView(generic.ListView):
     """Generic class-based list view for a list of authors."""
     model = Author
@@ -160,6 +161,7 @@ class BookCreate(CreateView):
     fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
     template_name = "polls/book_form.html"
 
+
 class BookUpdate(UpdateView):
     model = Book
     fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
@@ -172,7 +174,8 @@ class BookDelete(DeleteView):
 
 class GameCreate(CreateView):
     model = Game
-    fields = ['title', 'developer','date_of_release', 'genre', 'mode', 'summary']
+    form_class = GameForm
+    #fields = ['title', 'developer', 'date_of_release', 'genre', 'mode', 'summary']
     template_name = "polls/game_form.html"
 
 
@@ -180,21 +183,36 @@ class GameDelete(DeleteView):
     model = Game
     success_url = reverse_lazy('games')
 
+
 class GameListView(generic.ListView):
     model = Game
     paginate_by = 10
+
+class GameVerify(generic.DetailView):
+    model = Game
+    template_name = "polls/game_verify.html"
+    success_url = reverse_lazy('games')
+
+
+class GameUnverify(generic.DetailView):
+    model = Game
+    template_name = "polls/game_unverify.html"
+    success_url = reverse_lazy('games')
+
+
 
 
 class DeveloperDelete(DeleteView):
     model = Developer
     success_url = reverse_lazy('developers')
 
+
 class DeveloperCreate(CreateView):
     model = Developer
     fields = ['company_name', 'date_of_foundation']
     template_name = "polls/developer_form.html"
 
+
 class DeveloperListView(generic.ListView):
     model = Developer
     paginate_by = 10
-

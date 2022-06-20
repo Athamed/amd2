@@ -2,7 +2,7 @@
 
 {% block content %}
 
-
+<div class="form-group">
     {% if user.is_authenticated %}
         <form action="" method="post">
         {% csrf_token %}
@@ -15,4 +15,5 @@
     {% endif %}
 
 </form>
+</div>
 {% endblock %}
