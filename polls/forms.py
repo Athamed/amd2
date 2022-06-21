@@ -1,8 +1,28 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 import datetime  # for checking renewal date range.
-
+from .models import Movie
 from django import forms
+
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
+class MovieForm(forms.ModelForm):
+    class Meta:
+        model = Movie
+        fields = '__all__'
+        # fields = ('title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time')
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'title'}),
+            'actors': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'director': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'date_of_release': DateInput(),
+            'language': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'genre': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'running_time': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Movie length in minutes'}),
+        }
 
 
 class RenewBookForm(forms.Form):

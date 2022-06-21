@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from polls.forms import RenewBookForm
+from polls.forms import RenewBookForm, MovieForm
 from .models import Book, Author, BookInstance
 from .models import Movie, Series, Actor, Director
 from django.views import generic
@@ -49,19 +49,19 @@ def index(request):
 
 
 class MovieListView(generic.ListView):
-    template_name = "polls/movie_list.html"
+    template_name = "polls/movie/movie_list.html"
     model = Movie
     paginate_by = 10
 
 
 class MovieDetailView(generic.DetailView):
-    template_name = "polls/movie_detail.html"
+    template_name = "polls/movie/movie_detail.html"
     model = Movie
 
 
 class MovieDelete(UserPassesTestMixin, DeleteView):
     model = Movie
-    template_name = "polls/movie_delete.html"
+    template_name = "polls/movie/movie_delete.html"
     success_url = reverse_lazy('movies')
     login_url = reverse_lazy('index')
 
@@ -71,18 +71,19 @@ class MovieDelete(UserPassesTestMixin, DeleteView):
 
 class MovieCreate(CreateView):
     model = Movie
-    template_name = "polls/movie_create.html"
-    fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
+    template_name = "polls/movie/movie_create.html"
+    form_class = MovieForm
+    # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
 
 
 class SeriesListView(generic.ListView):
-    template_name = "polls/series_list.html"
+    template_name = "polls/movie/series_list.html"
     model = Series
     paginate_by = 10
 
 
 class SeriesDetailView(generic.DetailView):
-    template_name = "polls/series_detail.html"
+    template_name = "polls/movie/series_detail.html"
     model = Series
 
 
@@ -98,18 +99,18 @@ class SeriesDelete(UserPassesTestMixin, DeleteView):
 
 class SeriesCreate(CreateView):
     model = Series
-    template_name = "polls/series_create.html"
+    template_name = "polls/movie/series_create.html"
     fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'number_of_seasons']
 
 
 class ActorListView(generic.ListView):
-    template_name = "polls/actor_list.html"
+    template_name = "polls/movie/actor_list.html"
     model = Actor
     paginate_by = 10
 
 
 class ActorDetailView(generic.DetailView):
-    template_name = "polls/actor_detail.html"
+    template_name = "polls/movie/actor_detail.html"
     model = Actor
 
 
@@ -125,18 +126,18 @@ class ActorDelete(UserPassesTestMixin, DeleteView):
 
 class ActorCreate(CreateView):
     model = Actor
-    template_name = "polls/actor_create.html"
+    template_name = "polls/movie/actor_create.html"
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'specialisation']
 
 
 class DirectorListView(generic.ListView):
-    template_name = "polls/director_list.html"
+    template_name = "polls/movie/director_list.html"
     model = Director
     paginate_by = 10
 
 
 class DirectorDetailView(generic.DetailView):
-    template_name = "polls/director_detail.html"
+    template_name = "polls/movie/director_detail.html"
     model = Director
 
 
@@ -152,7 +153,7 @@ class DirectorDelete(UserPassesTestMixin, DeleteView):
 
 class DirectorCreate(CreateView):
     model = Director
-    template_name = "polls/director_create.html"
+    template_name = "polls/movie/director_create.html"
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'amount_of_films']
 
 

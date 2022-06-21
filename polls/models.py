@@ -158,7 +158,7 @@ class Director(Person):
 
 
 class Movie(MovieSeriesBase):
-    running_time = models.CharField(max_length=100, help_text="Movie length in minutes")
+    running_time = models.CharField(max_length=100)
 
     def get_absolute_url(self):
         return reverse('movie-detail', args=[str(self.id)])
