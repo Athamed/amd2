@@ -250,4 +250,3 @@ class DeveloperListView(generic.ListView):
     paginate_by = 10
     template_name = "polls/Game/developer_list.html"
 
-
