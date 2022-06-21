@@ -4,6 +4,8 @@
     {% if user.is_authenticated %}
         <p style="text-align:center">Chcesz usunąć dewelopera: <a
                 href="{% url 'developer-delete' developer.id %}">Klik</a></p>
+        <p style="text-align:center">Chcesz zeedytować dewelopera: <a
+                href="{% url 'developer-update' developer.id %}">Klik</a></p>
     {% endif %}
     <h1>Developer: {{ developer }} </h1>
     <p>{{ developer.date_of_foundation }}</p>

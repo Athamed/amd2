@@ -10,11 +10,12 @@ from django.urls import reverse
 from polls.forms import RenewBookForm
 from .models import Book, Author, BookInstance, Game, Developer
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
 from .forms import GameForm
 
 def index(request):
@@ -70,13 +71,13 @@ class AuthorDetailView(generic.DetailView):
 class DeveloperDetailView(generic.DetailView):
     """Generic class-based detail view for a developer."""
     model = Developer
-    template_name = 'polls/developer_detail.html'
+    template_name = 'polls/Game/developer_detail.html'
 
 
 class GameDetailView(generic.DetailView):
     """Generic class-based detail view for a game."""
     model = Game
-    template_name = 'polls/game_detail.html'
+    template_name = 'polls/Game/game_detail.html'
 
 
 class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
@@ -176,17 +177,28 @@ class GameCreate(CreateView):
     model = Game
     form_class = GameForm
     #fields = ['title', 'developer', 'date_of_release', 'genre', 'mode', 'summary']
-    template_name = "polls/game_form.html"
+    template_name = "polls/Game/game_form.html"
+
+
+
+class GameUpdate(UpdateView):
+    model = Game
+    template_name = "polls/Game/game_form.html"
+    fields = ['title', 'developer', 'date_of_release', 'genre', 'mode', 'summary', 'Verified']
+   # success_url = reverse_lazy('games')
+  #  template_name = "polls/Game/game_confirm_delete.html"
 
 
 class GameDelete(DeleteView):
     model = Game
     success_url = reverse_lazy('games')
+    template_name = "polls/Game/game_confirm_delete.html"
 
 
 class GameListView(generic.ListView):
     model = Game
     paginate_by = 10
+    template_name = "polls/Game/game_list.html"
 
     def get_context_data(self, *args, **kwargs):
         game_list = Game.objects.order_by('title')
@@ -194,15 +206,24 @@ class GameListView(generic.ListView):
         context["game_list"] = game_list
         return context
 
-class GameVerify(generic.DetailView):
+
+class GameVerify(UserPassesTestMixin, generic.DetailView):
     model = Game
-    template_name = "polls/game_verify.html"
+    #login_url = '/polls/error401'
+    #redirect_field_name = None
+
+    template_name = "polls/Game/game_verify.html"
     success_url = reverse_lazy('games')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
 
 
 class GameUnverify(generic.DetailView):
     model = Game
-    template_name = "polls/game_unverify.html"
+    template_name = "polls/Game/game_unverify.html"
     success_url = reverse_lazy('games')
 
 
@@ -211,14 +232,22 @@ class GameUnverify(generic.DetailView):
 class DeveloperDelete(DeleteView):
     model = Developer
     success_url = reverse_lazy('developers')
+    template_name = "polls/Game/developer_confirm_delete.html"
 
 
 class DeveloperCreate(CreateView):
     model = Developer
     fields = ['company_name', 'date_of_foundation']
-    template_name = "polls/developer_form.html"
+    template_name = "polls/Game/developer_form.html"
 
+class DeveloperUpdate(UpdateView):
+    model = Developer
+    fields = ['company_name', 'date_of_foundation']
+    template_name = "polls/Game/developer_form.html"
 
 class DeveloperListView(generic.ListView):
     model = Developer
     paginate_by = 10
+    template_name = "polls/Game/developer_list.html"
+
+

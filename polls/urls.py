@@ -22,6 +22,7 @@ urlpatterns = [
 
     path('games/', views.GameListView.as_view(), name='games'),
     path('game/<int:pk>', views.GameDetailView.as_view(), name='game-detail'),
+    path('game/<int:pk>/update/', views.GameUpdate.as_view(), name='game-update'),
     path('game/<int:pk>/delete/', views.GameDelete.as_view(), name='game-delete'),
     path('game/<int:pk>/verify/', views.GameVerify.as_view(), name='game-verify'),
     path('game/<int:pk>/unverify/', views.GameUnverify.as_view(), name='game-unverify'),
@@ -30,6 +31,8 @@ urlpatterns = [
 
     path('developers/', views.DeveloperListView.as_view(), name='developers'),
     path('developer/<int:pk>', views.DeveloperDetailView.as_view(), name='developer-detail'),
+    path('developer/<int:pk>/update', views.DeveloperUpdate.as_view(), name='developer-update'),
+
     path('developer/<int:pk>/delete', views.DeveloperDelete.as_view(), name='developer-delete'),
     path('developer/create/', views.DeveloperCreate.as_view(), name='developer-create'),
 
