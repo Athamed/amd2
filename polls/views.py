@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 import datetime
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -58,10 +59,14 @@ class MovieDetailView(generic.DetailView):
     model = Movie
 
 
-class MovieDelete(DeleteView):
+class MovieDelete(UserPassesTestMixin, DeleteView):
     model = Movie
     template_name = "polls/movie_delete.html"
     success_url = reverse_lazy('movies')
+    login_url = reverse_lazy('index')
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class MovieCreate(CreateView):
@@ -81,10 +86,14 @@ class SeriesDetailView(generic.DetailView):
     model = Series
 
 
-class SeriesDelete(DeleteView):
+class SeriesDelete(UserPassesTestMixin, DeleteView):
     model = Series
     template_name = ""
     success_url = reverse_lazy('series')
+    login_url = reverse_lazy('index')
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class SeriesCreate(CreateView):
@@ -104,10 +113,14 @@ class ActorDetailView(generic.DetailView):
     model = Actor
 
 
-class ActorDelete(DeleteView):
+class ActorDelete(UserPassesTestMixin, DeleteView):
     model = Actor
     template_name = ""
     success_url = reverse_lazy('actors')
+    login_url = reverse_lazy('index')
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class ActorCreate(CreateView):
@@ -127,10 +140,14 @@ class DirectorDetailView(generic.DetailView):
     model = Director
 
 
-class DirectorDelete(DeleteView):
+class DirectorDelete(UserPassesTestMixin, DeleteView):
     model = Director
     template_name = ""
     success_url = reverse_lazy('directors')
+    login_url = reverse_lazy('index')
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class DirectorCreate(CreateView):
