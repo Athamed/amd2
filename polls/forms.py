@@ -20,7 +20,7 @@ class GameForm(forms.ModelForm):
                  'developer': forms.Select(attrs={'class': 'form-control'}),
                  'date_of_release': DateInput(),
                  'genre': forms.SelectMultiple(attrs={'class': 'form-control'}),
-                 'mode': forms.Select(attrs={'class': 'form-control'}),
+                 'mode': forms.SelectMultiple(attrs={'class': 'form-control'}),
                  'summary': forms.Textarea(attrs={'class': 'form-control'}),
                  }
 

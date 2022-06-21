@@ -188,6 +188,12 @@ class GameListView(generic.ListView):
     model = Game
     paginate_by = 10
 
+    def get_context_data(self, *args, **kwargs):
+        game_list = Game.objects.order_by('title')
+        context = super(GameListView, self).get_context_data(*args, **kwargs)
+        context["game_list"] = game_list
+        return context
+
 class GameVerify(generic.DetailView):
     model = Game
     template_name = "polls/game_verify.html"

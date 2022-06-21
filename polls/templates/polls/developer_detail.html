@@ -13,7 +13,6 @@
 
         <dl>
             {% for game in developer.game_set.all %}
-                <p><b>{{ game }} </b> - {{ game.summary }}</p>
                 <p><a href="{% url 'game-detail' game.pk %}">{{ game }}</a> - {{ game.summary }}</p>
 
             {% endfor %}
