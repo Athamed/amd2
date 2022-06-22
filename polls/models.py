@@ -191,7 +191,27 @@ class Developer(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     #profile_image = models.ImageField(null = True, blank=True, upload_to="images/")
-    bio = models.TextField()
+    profile_image_url = models.TextField(max_length=100, null = True, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    profile_description = models.TextField(max_length=100, null=True, blank=True)
+    signature = models.TextField(max_length=100, null=True, blank=True)
+
+
+
+    def WhenJoined(self):
+        return self.user.date_joined
+    def LastSeen(self):
+        return self.user.last_login
+
+
+    Genders = (
+        ('m', 'Male'),
+        ('f', 'Female'),
+        ('u', 'Undefined'),
+    )
+
+    gender = models.CharField(max_length=1, choices=Genders, blank=True, default='u',
+        help_text='What is your gender',)
 
     def __str__(self):
         return str(self.user)

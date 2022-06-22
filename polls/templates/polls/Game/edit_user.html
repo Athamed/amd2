@@ -1,8 +1,14 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    {{ user.profile.user.date_joined }}
-  <h2>Edit user - potem to zmienię jak wrócę, teraz edytujemy UŻYTOWNIKA, nie Profil.</h2>
+    {% if user.profile.profile_image_url %}
+        <img src ="{{ user.profile.profile_image_url }} " >
+    {% endif %}
+
+    {{ user.profile.WhenJoined }}
+    {{ user.profile.LastSeen }}
+
+  <h2>Edit user - do poprawy, edytujemy usera.</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
