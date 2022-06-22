@@ -29,6 +29,8 @@ class GameForm(forms.ModelForm):
     class Meta:
         model = Game
         fields = ('title','developer','date_of_release','genre','mode','summary')
+       #fields = ('title','developer','date_of_release','genre','mode','summary','game_image')
+
         #fields = ('title','developer','date_of_release')
 
         widgets ={'title':  forms.TextInput(attrs={'class': 'form-control','placeholder':'tytul'}),

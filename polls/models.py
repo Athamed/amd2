@@ -52,6 +52,7 @@ class Game(models.Model):
     title = models.CharField(max_length=200)
     developer = models.ForeignKey('Developer', on_delete=models.SET_NULL, null=True)
     date_of_release = models.DateField(null=True, blank=True)
+    #game_image = models.ImageField(null = True, blank=True, upload_to="images/")
 
     genre = models.ManyToManyField(GameGenre, help_text='Select a genre for this game')
     mode = models.ManyToManyField(GameMode, help_text='Select which game mode is available')
@@ -186,3 +187,11 @@ class Developer(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.company_name}'
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    #profile_image = models.ImageField(null = True, blank=True, upload_to="images/")
+    bio = models.TextField()
+
+    def __str__(self):
+        return str(self.user)

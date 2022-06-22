@@ -263,6 +263,7 @@ class DeveloperListView(generic.ListView):
 class PasswordsChangeView(PasswordChangeView):
     #form_class = PasswordChangeForm #domyślne
     form_class =  PasswordChangingForm #Nowe z forms.py
+    template_name = 'polls/Profile/change_password.html'
     success_url = reverse_lazy('password_success')
 
 def password_change_success(request):
