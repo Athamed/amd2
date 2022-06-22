@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
 import datetime
 
@@ -16,7 +16,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 
-from .forms import GameForm
+from .forms import GameForm, EditUserForm
 
 def index(request):
     """View function for home page of site."""
@@ -105,6 +105,14 @@ class SignUpView(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
+
+class UserEditView(generic.UpdateView):
+    form_class = EditUserForm
+    success_url = reverse_lazy("index")
+    template_name = "polls/Game/edit_user.html"
+
+    def get_object(self):
+        return self.request.user
 
 
 @login_required

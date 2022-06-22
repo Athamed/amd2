@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import SignUpView
+from .views import SignUpView,UserEditView
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -11,7 +11,10 @@ urlpatterns = [
     path('author/<int:pk>', views.AuthorDetailView.as_view(), name='author-detail'),
     path('mybooks/', views.LoanedBooksByUserListView.as_view(), name='my-borrowed'),
     path(r'borrowed/', views.LoanedBooksAllListView.as_view(), name='all-borrowed'),
+
     path("signup/", SignUpView.as_view(), name="signup"),
+    path("edit_user/", UserEditView.as_view(), name="edit_user"),
+
     path('book/<uuid:pk>/renew/', views.renew_book_librarian, name='renew-book-librarian'),
     path('author/create/', views.AuthorCreate.as_view(), name='author-create'),
     path('author/<int:pk>/update/', views.AuthorUpdate.as_view(), name='author-update'),

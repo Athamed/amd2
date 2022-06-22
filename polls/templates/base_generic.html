@@ -25,6 +25,7 @@
         {% if user.is_authenticated %}
             <li>User: {{ user.get_username }}</li>
             <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li>
+            <li><a href="{% url 'edit_user' %}">Edit my Profile</a></li>
             <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
             <hr>
             <li><a href="{% url 'game-create' %}">Add game</a></li>
