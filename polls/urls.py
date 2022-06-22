@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import SignUpView,UserEditView
-
+from .views import SignUpView, UserEditView, PasswordsChangeView
+from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('', views.index, name='index'),
     path('books/', views.BookListView.as_view(), name='books'),
@@ -38,5 +38,9 @@ urlpatterns = [
 
     path('developer/<int:pk>/delete', views.DeveloperDelete.as_view(), name='developer-delete'),
     path('developer/create/', views.DeveloperCreate.as_view(), name='developer-create'),
+
+    #path('password/',auth_views.PasswordChangeView.as_view(template_name='polls/Profile/change_password.html')),
+    path('password/',PasswordsChangeView.as_view(template_name='polls/Profile/change_password.html')),
+    path('password_success', views.password_change_success, name="password_success"),
 
 ]

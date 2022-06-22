@@ -3,9 +3,8 @@ from django.utils.translation import gettext_lazy as _
 import datetime  # for checking renewal date range.
 from django import forms
 from .models import Game
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
-
 
 class EditUserForm(UserChangeForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
@@ -58,3 +57,13 @@ class RenewBookForm(forms.Form):
 
         # Remember to always return the cleaned data.
         return data
+
+class PasswordChangingForm(PasswordChangeForm):
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type':'password'}))
+    new_password1 = forms.CharField(max_length= 100, widget=forms.PasswordInput(attrs={'class': 'form-control','type':'password'}))
+    new_password2 = forms.CharField(max_length= 100, widget=forms.PasswordInput(attrs={'class': 'form-control','type':'password'}))
+
+    class Meta:
+        model = User
+        fields = ('old_password','new_password1','new_password2')
+

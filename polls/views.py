@@ -15,8 +15,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
-
-from .forms import GameForm, EditUserForm
+from django.contrib.auth.views import PasswordChangeView
+from .forms import GameForm, EditUserForm, PasswordChangingForm
+from django.contrib.auth.views import PasswordChangeForm
 
 def index(request):
     """View function for home page of site."""
@@ -257,4 +258,13 @@ class DeveloperListView(generic.ListView):
     model = Developer
     paginate_by = 10
     template_name = "polls/Game/developer_list.html"
+
+
+class PasswordsChangeView(PasswordChangeView):
+    #form_class = PasswordChangeForm #domyślne
+    form_class =  PasswordChangingForm #Nowe z forms.py
+    success_url = reverse_lazy('password_success')
+
+def password_change_success(request):
+    return render(request, 'polls/Profile/password_success.html')
 
