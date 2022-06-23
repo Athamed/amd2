@@ -17,7 +17,6 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import PasswordChangeView
 from .forms import GameForm, EditUserForm, PasswordChangingForm
-from django.contrib.auth.views import PasswordChangeForm
 
 def index(request):
     """View function for home page of site."""
@@ -69,18 +68,6 @@ class AuthorDetailView(generic.DetailView):
     model = Author
 
 
-class DeveloperDetailView(generic.DetailView):
-    """Generic class-based detail view for a developer."""
-    model = Developer
-    template_name = 'polls/Game/developer_detail.html'
-
-
-class GameDetailView(generic.DetailView):
-    """Generic class-based detail view for a game."""
-    model = Game
-    template_name = 'polls/Game/game_detail.html'
-
-
 class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
     """Generic class-based view listing books on loan to current user."""
     model = BookInstance
@@ -106,14 +93,6 @@ class SignUpView(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
-
-class UserEditView(generic.UpdateView):
-    form_class = EditUserForm
-    success_url = reverse_lazy("index")
-    template_name = "polls/Game/edit_user.html"
-
-    def get_object(self):
-        return self.request.user
 
 
 @login_required
@@ -190,19 +169,35 @@ class GameCreate(CreateView):
 
 
 
-class GameUpdate(UpdateView):
+
+class GameDetailView(generic.DetailView):
+    """Generic class-based detail view for a game."""
+    model = Game
+    template_name = 'polls/Game/game_detail.html'
+
+
+class GameUpdate(UserPassesTestMixin, UpdateView):
     model = Game
     template_name = "polls/Game/game_form.html"
     fields = ['title', 'developer', 'date_of_release', 'genre', 'mode', 'summary', 'Verified']
+
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
    # success_url = reverse_lazy('games')
   #  template_name = "polls/Game/game_confirm_delete.html"
 
 
-class GameDelete(DeleteView):
+class GameDelete(UserPassesTestMixin, DeleteView):
     model = Game
     success_url = reverse_lazy('games')
     template_name = "polls/Game/game_confirm_delete.html"
 
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
 
 class GameListView(generic.ListView):
     model = Game
@@ -230,18 +225,31 @@ class GameVerify(UserPassesTestMixin, generic.DetailView):
         return redirect('index')
 
 
-class GameUnverify(generic.DetailView):
+class GameUnverify(UserPassesTestMixin, generic.DetailView):
     model = Game
     template_name = "polls/Game/game_unverify.html"
     success_url = reverse_lazy('games')
 
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
 
 
+class DeveloperDetailView(generic.DetailView):
+    """Generic class-based detail view for a developer."""
+    model = Developer
+    template_name = 'polls/Game/developer_detail.html'
 
-class DeveloperDelete(DeleteView):
+class DeveloperDelete(UserPassesTestMixin, DeleteView):
     model = Developer
     success_url = reverse_lazy('developers')
     template_name = "polls/Game/developer_confirm_delete.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
 
 
 class DeveloperCreate(CreateView):
@@ -249,10 +257,17 @@ class DeveloperCreate(CreateView):
     fields = ['company_name', 'date_of_foundation']
     template_name = "polls/Game/developer_form.html"
 
-class DeveloperUpdate(UpdateView):
+
+class DeveloperUpdate(UserPassesTestMixin, UpdateView):
     model = Developer
     fields = ['company_name', 'date_of_foundation']
     template_name = "polls/Game/developer_form.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
+
 
 class DeveloperListView(generic.ListView):
     model = Developer
@@ -268,4 +283,18 @@ class PasswordsChangeView(PasswordChangeView):
 
 def password_change_success(request):
     return render(request, 'polls/Profile/password_success.html')
+
+
+class UserEditView(UserPassesTestMixin, generic.UpdateView):
+    form_class = EditUserForm
+    success_url = reverse_lazy("index")
+    template_name = "polls/Game/edit_user.html"
+
+    def get_object(self):
+        return self.request.user
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+    def handle_no_permission(self):
+        return redirect('index')
 

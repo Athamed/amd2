@@ -15,8 +15,9 @@
 
         <dl>
             {% for game in developer.game_set.all %}
-                <p><a href="{% url 'game-detail' game.pk %}">{{ game }}</a> - {{ game.summary }}</p>
-
+                {% if game.Verified %}
+                    <p><a href="{% url 'game-detail' game.pk %}">{{ game }}</a> - {{ game.summary }}</p>
+                {% endif %}
             {% endfor %}
         </dl>
 
