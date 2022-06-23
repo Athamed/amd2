@@ -144,6 +144,7 @@ class MovieSeriesBase(models.Model):
     date_of_release = models.DateField()
     genre = models.ManyToManyField('MovieSeriesGenre')
     Verified = models.BooleanField(default=False)
+    summary = models.TextField(max_length=1000, default="summary")
 
     def verified(self, *args, **kwargs):
         self.Verified = True

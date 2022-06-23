@@ -2,7 +2,10 @@
 
 {% block content %}
 
-    <h1> Title: {{ series.title }} </h1>
+    <h1> {{ series.title }} </h1>
+    <div style="width: 500px;">
+        {{ series.summary }}
+    </div>
     <ul>
         <li>Directors:
             <ul>

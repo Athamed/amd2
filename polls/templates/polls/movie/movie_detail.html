@@ -2,7 +2,11 @@
 
 {% block content %}
 
-    <h1> Title: {{ movie.title }} </h1>
+    <h1> {{ movie.title }} </h1>
+    <div style="width: 500px;">
+        {{ movie.summary }}
+    </div>
+    <br>
     <ul>
         <li>Directors:
             <ul>

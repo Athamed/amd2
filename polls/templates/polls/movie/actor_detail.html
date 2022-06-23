@@ -2,7 +2,7 @@
 
 {% block content%}
 
-    <h1> Actor: {{ actor.first_name }} {{ actor.last_name }} </h1>
+    <h1> {{ actor.first_name }} {{ actor.last_name }} </h1>
     <ul>
         <li>Specialisation: {{ actor.specialisation }}</li>
         <li>Date of birth: {{ actor.date_of_birth }}</li>
@@ -18,7 +18,7 @@
     {% if user.is_superuser %}
         <a href="{% url 'actor-delete' pk=actor.id %}"><button>DELETE ACTOR</button></a>
         <br>
-        {% if series.Verified %}
+        {% if actor.Verified %}
             <a href="{% url 'actor-unverify' pk=actor.id %}"><button>UNDO VERIFICATION</button></a>
         {% else %}
             <a href="{% url 'actor-verify' pk=actor.id %}"><button>VERIFY</button></a>

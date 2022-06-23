@@ -13,7 +13,7 @@ class MovieForm(forms.ModelForm):
     class Meta:
         model = Movie
         #fields = '__all__'
-        fields = ('title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time')
+        fields = ('title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time', 'summary')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'title'}),
             'actors': forms.SelectMultiple(attrs={'class': 'form-control'}),
@@ -21,7 +21,9 @@ class MovieForm(forms.ModelForm):
             'date_of_release': DateInput(),
             'language': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'genre': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'running_time': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Movie length in minutes'})
+            'running_time': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Movie length in minutes'}),
+            'summary': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+
         }
 
 
@@ -29,7 +31,7 @@ class SeriesForm(forms.ModelForm):
     class Meta:
         model = Series
         #fields = '__all__'
-        fields = ('title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'number_of_seasons')
+        fields = ('title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'number_of_seasons', 'summary')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'title'}),
             'actors': forms.SelectMultiple(attrs={'class': 'form-control'}),
@@ -37,7 +39,8 @@ class SeriesForm(forms.ModelForm):
             'date_of_release': DateInput(),
             'language': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'genre': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'number_of_seasons': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'number of seasons'})
+            'number_of_seasons': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'number of seasons'}),
+            'summary': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
         }
 
 
