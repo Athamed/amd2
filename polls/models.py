@@ -120,6 +120,17 @@ class Person(models.Model):
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField(null=True, blank=True)
+    Verified = models.BooleanField(default=False)
+
+    def verified(self, *args, **kwargs):
+        self.Verified = True
+        self.save(update_fields=['Verified'])
+        return self.Verified
+
+    def unverified(self, *args, **kwargs):
+        self.Verified = False
+        self.save(update_fields=['Verified'])
+        return self.Verified
 
     class Meta:
         abstract = True
@@ -132,6 +143,17 @@ class MovieSeriesBase(models.Model):
     director = models.ManyToManyField('Director')
     date_of_release = models.DateField()
     genre = models.ManyToManyField('MovieSeriesGenre')
+    Verified = models.BooleanField(default=False)
+
+    def verified(self, *args, **kwargs):
+        self.Verified = True
+        self.save(update_fields=['Verified'])
+        return self.Verified
+
+    def unverified(self, *args, **kwargs):
+        self.Verified = False
+        self.save(update_fields=['Verified'])
+        return self.Verified
 
     class Meta:
         abstract = True
@@ -168,7 +190,7 @@ class Movie(MovieSeriesBase):
 
 
 class Series(MovieSeriesBase):
-    number_of_seasons = models.CharField(max_length=100, help_text="Number of seasons")
+    number_of_seasons = models.CharField(max_length=100)
 
     def get_absolute_url(self):
         return reverse('series-detail', args=[str(self.id)])

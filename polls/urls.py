@@ -24,20 +24,32 @@ urlpatterns = [
     path('movie/<int:pk>', views.MovieDetailView.as_view(), name='movie-detail'),
     path('movie/<int:pk>/delete', views.MovieDelete.as_view(), name='movie-delete'),
     path('movie/create', views.MovieCreate.as_view(), name='movie-create'),
+    path('movie/<int:pk>/update', views.MovieUpdate.as_view(), name='movie-update'),
+    path('movie/<int:pk>/verify', views.MovieVerify.as_view(), name='movie-verify'),
+    path('movie/<int:pk>/unverify', views.MovieUnverify.as_view(), name='movie-unverify'),
 
     path('series/', views.SeriesListView.as_view(), name='series'),
     path('series/<int:pk>', views.SeriesDetailView.as_view(), name='series-detail'),
     path('series/<int:pk>/delete', views.SeriesDelete.as_view(), name='series-delete'),
     path('series/create', views.SeriesCreate.as_view(), name='series-create'),
+    path('series/<int:pk>/update', views.SeriesUpdate.as_view(), name='series-update'),
+    path('series/<int:pk>/verify', views.SeriesVerify.as_view(), name='series-verify'),
+    path('series/<int:pk>/unverify', views.SeriesUnverify.as_view(), name='series-unverify'),
 
     path('actor/', views.ActorListView.as_view(), name='actors'),
     path('actor/<int:pk>', views.ActorDetailView.as_view(), name='actor-detail'),
     path('actor/<int:pk>/delete', views.ActorDelete.as_view(), name='actor-delete'),
     path('actor/create', views.ActorCreate.as_view(), name='actor-create'),
+    path('actor/<int:pk>/update', views.ActorUpdate.as_view(), name='actor-update'),
+    path('actor/<int:pk>/verify', views.ActorVerify.as_view(), name='actor-verify'),
+    path('actor/<int:pk>/unverify', views.ActorUnverify.as_view(), name='actor-unverify'),
 
     path('director/', views.DirectorListView.as_view(), name='directors'),
     path('director/<int:pk>', views.DirectorDetailView.as_view(), name='director-detail'),
     path('director/<int:pk>/delete', views.DirectorDelete.as_view(), name='director-delete'),
     path('director/create', views.DirectorCreate.as_view(), name='director-create'),
+    path('director/<int:pk>/update', views.DirectorUpdate.as_view(), name='director-update'),
+    path('director/<int:pk>/verify', views.DirectorVerify.as_view(), name='director-verify'),
+    path('director/<int:pk>/unverify', views.DirectorUnverify.as_view(), name='director-unverify'),
 
 ]

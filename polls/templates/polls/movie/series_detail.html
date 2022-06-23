@@ -39,7 +39,22 @@
             </ul>
         </li>
         <li>Date of release: {{ series.date_of_release }}</li>
+        {% if series.Verified %}
+            <li>Status: verified</li>
+        {% else %}
+            <li>Status: not verified</li>
+        {% endif %}
     </ul>
-
+    {% if user.is_superuser %}
+        <a href="{% url 'series-delete' pk=series.id %}"><button>DELETE SERIES</button></a>
+        <br>
+        {% if series.Verified %}
+            <a href="{% url 'series-unverify' pk=series.id %}"><button>UNDO VERIFICATION</button></a>
+        {% else %}
+            <a href="{% url 'series-verify' pk=series.id %}"><button>VERIFY</button></a>
+        {% endif %}
+        <br>
+        <a href="{% url 'series-update' pk=series.id %}"><button>UPDATE</button></a>
+    {% endif %}
 
 {% endblock %}

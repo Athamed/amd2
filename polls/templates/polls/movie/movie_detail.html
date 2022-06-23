@@ -39,10 +39,22 @@
             </ul>
         </li>
         <li>Date of release: {{ movie.date_of_release }}</li>
+        {% if movie.Verified %}
+            <li>Status: verified</li>
+        {% else %}
+            <li>Status: not verified</li>
+        {% endif %}
     </ul>
     {% if user.is_superuser %}
-    <a href="{% url 'movie-delete' pk=movie.id %}"><button>DELETE MOVIE</button></a>
+        <a href="{% url 'movie-delete' pk=movie.id %}"><button>DELETE MOVIE</button></a>
+        <br>
+        {% if movie.Verified %}
+            <a href="{% url 'movie-unverify' pk=movie.id %}"><button>UNDO VERIFICATION</button></a>
+        {% else %}
+            <a href="{% url 'movie-verify' pk=movie.id %}"><button>VERIFY</button></a>
+        {% endif %}
+        <br>
+        <a href="{% url 'movie-update' pk=movie.id %}"><button>UPDATE</button></a>
     {% endif %}
-
 
 {% endblock %}

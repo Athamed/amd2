@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from polls.forms import RenewBookForm, MovieForm
+from polls.forms import RenewBookForm, MovieForm, SeriesForm, ActorForm, DirectorForm
 from .models import Book, Author, BookInstance
 from .models import Movie, Series, Actor, Director
 from django.views import generic
@@ -68,12 +68,58 @@ class MovieDelete(UserPassesTestMixin, DeleteView):
     def test_func(self):
         return self.request.user.is_superuser
 
+    def handle_no_permission(self):
+        return redirect('index')
 
-class MovieCreate(CreateView):
+
+class MovieCreate(UserPassesTestMixin, CreateView):
     model = Movie
     template_name = "polls/movie/movie_create.html"
     form_class = MovieForm
     # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+
+    def handle_no_permission(self):
+        return redirect('login')
+
+
+class MovieUpdate(UserPassesTestMixin, UpdateView):
+    model = Movie
+    template_name = "polls/movie/movie_create.html"
+    form_class = MovieForm
+    # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class MovieVerify(UserPassesTestMixin, generic.DetailView):
+    model = Movie
+    template_name = "polls/movie/movie_verify.html"
+    # success_url = reverse_lazy('movies')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class MovieUnverify(UserPassesTestMixin, generic.DetailView):
+    model = Movie
+    template_name = "polls/movie/movie_unverify.html"
+    # success_url = reverse_lazy('movies')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
 
 
 class SeriesListView(generic.ListView):
@@ -89,18 +135,65 @@ class SeriesDetailView(generic.DetailView):
 
 class SeriesDelete(UserPassesTestMixin, DeleteView):
     model = Series
-    template_name = ""
+    template_name = "polls/movie/series_delete.html"
     success_url = reverse_lazy('series')
     login_url = reverse_lazy('index')
 
     def test_func(self):
         return self.request.user.is_superuser
 
+    def handle_no_permission(self):
+        return redirect('index')
 
-class SeriesCreate(CreateView):
+
+class SeriesCreate(UserPassesTestMixin, CreateView):
+    model = Series
+    form_class = SeriesForm
+    template_name = "polls/movie/series_create.html"
+    # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'number_of_seasons']
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+
+    def handle_no_permission(self):
+        return redirect('login')
+
+
+class SeriesUpdate(UserPassesTestMixin, UpdateView):
     model = Series
     template_name = "polls/movie/series_create.html"
-    fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'number_of_seasons']
+    form_class = SeriesForm
+    # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class SeriesVerify(UserPassesTestMixin, generic.DetailView):
+    model = Series
+    template_name = "polls/movie/series_verify.html"
+    # success_url = reverse_lazy('series')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class SeriesUnverify(UserPassesTestMixin, generic.DetailView):
+    model = Series
+    template_name = "polls/movie/series_unverify.html"
+    # success_url = reverse_lazy('series')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
 
 
 class ActorListView(generic.ListView):
@@ -116,18 +209,65 @@ class ActorDetailView(generic.DetailView):
 
 class ActorDelete(UserPassesTestMixin, DeleteView):
     model = Actor
-    template_name = ""
+    template_name = "polls/movie/actor_delete.html"
     success_url = reverse_lazy('actors')
-    login_url = reverse_lazy('index')
+    # login_url = reverse_lazy('index')
 
     def test_func(self):
         return self.request.user.is_superuser
 
+    def handle_no_permission(self):
+        return redirect('index')
 
-class ActorCreate(CreateView):
+
+class ActorCreate(UserPassesTestMixin, CreateView):
+    model = Actor
+    form_class = ActorForm
+    template_name = "polls/movie/actor_create.html"
+    # fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'specialisation']
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+
+    def handle_no_permission(self):
+        return redirect('login')
+
+
+class ActorUpdate(UserPassesTestMixin, UpdateView):
     model = Actor
     template_name = "polls/movie/actor_create.html"
-    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'specialisation']
+    form_class = ActorForm
+    # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class ActorVerify(UserPassesTestMixin, generic.DetailView):
+    model = Actor
+    template_name = "polls/movie/actor_verify.html"
+    # success_url = reverse_lazy('series')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class ActorUnverify(UserPassesTestMixin, generic.DetailView):
+    model = Actor
+    template_name = "polls/movie/actor_unverify.html"
+    # success_url = reverse_lazy('series')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
 
 
 class DirectorListView(generic.ListView):
@@ -143,18 +283,65 @@ class DirectorDetailView(generic.DetailView):
 
 class DirectorDelete(UserPassesTestMixin, DeleteView):
     model = Director
-    template_name = ""
+    template_name = "polls/movie/director_delete.html"
     success_url = reverse_lazy('directors')
     login_url = reverse_lazy('index')
 
     def test_func(self):
         return self.request.user.is_superuser
 
+    def handle_no_permission(self):
+        return redirect('index')
 
-class DirectorCreate(CreateView):
+
+class DirectorCreate(UserPassesTestMixin, CreateView):
+    model = Director
+    form_class = DirectorForm
+    template_name = "polls/movie/director_create.html"
+    # fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'amount_of_films']
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+
+    def handle_no_permission(self):
+        return redirect('login')
+
+
+class DirectorUpdate(UserPassesTestMixin, UpdateView):
     model = Director
     template_name = "polls/movie/director_create.html"
-    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'amount_of_films']
+    form_class = DirectorForm
+    # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class DirectorVerify(UserPassesTestMixin, generic.DetailView):
+    model = Director
+    template_name = "polls/movie/director_verify.html"
+    # success_url = reverse_lazy('series')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class DirectorUnverify(UserPassesTestMixin, generic.DetailView):
+    model = Director
+    template_name = "polls/movie/director_unverify.html"
+    # success_url = reverse_lazy('series')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect('index')
 
 
 class BookListView(generic.ListView):
