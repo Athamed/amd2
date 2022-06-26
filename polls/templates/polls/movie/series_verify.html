@@ -1,0 +1,13 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    {% if series.verified == True %}
+        <p>Series <b>{{ series.title }}</b> is now verified!</p>
+        <a href="{{ series.get_absolute_url }}"><button>Go back to {{ series }}</button></a>
+        <br>
+        <p>[Automatic return in 5 seconds]</p>
+
+        <meta http-equiv="refresh" content="5;url={{   series.get_absolute_url  }}">
+    {% endif %}
+    
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="container">
+    <p>Scraping time: {{ time }} seconds</p>
+    {% for movie in movies %}
+        {{ movie }}
+        <br>
+    {% endfor %}
+  <h1>DONE</h1>
+</div>
+{% endblock %}
