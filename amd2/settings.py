@@ -147,3 +147,6 @@ STATIC_URL = 'static/'
 # Simplified static file serving.
 # https://pypi.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# MEDIA_URL = "media/"
+# MEDIA_ROOT = BASE_DIR / 'collected-media'
