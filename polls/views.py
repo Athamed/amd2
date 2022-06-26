@@ -33,6 +33,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.views import PasswordChangeView
 from .forms import GameForm, EditUserForm, PasswordChangingForm
 
+
 def index(request):
     """View function for home page of site."""
 
@@ -90,6 +91,7 @@ class MovieCreate(UserPassesTestMixin, CreateView):
     model = Movie
     template_name = "polls/movie/movie_create.html"
     form_class = MovieForm
+
     # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
 
     def test_func(self):
@@ -103,6 +105,7 @@ class MovieUpdate(UserPassesTestMixin, UpdateView):
     model = Movie
     template_name = "polls/movie/movie_create.html"
     form_class = MovieForm
+
     # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
 
     def test_func(self):
@@ -115,6 +118,7 @@ class MovieUpdate(UserPassesTestMixin, UpdateView):
 class MovieVerify(UserPassesTestMixin, generic.DetailView):
     model = Movie
     template_name = "polls/movie/movie_verify.html"
+
     # success_url = reverse_lazy('movies')
 
     def test_func(self):
@@ -127,6 +131,7 @@ class MovieVerify(UserPassesTestMixin, generic.DetailView):
 class MovieUnverify(UserPassesTestMixin, generic.DetailView):
     model = Movie
     template_name = "polls/movie/movie_unverify.html"
+
     # success_url = reverse_lazy('movies')
 
     def test_func(self):
@@ -164,6 +169,7 @@ class SeriesCreate(UserPassesTestMixin, CreateView):
     model = Series
     form_class = SeriesForm
     template_name = "polls/movie/series_create.html"
+
     # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'number_of_seasons']
 
     def test_func(self):
@@ -177,6 +183,7 @@ class SeriesUpdate(UserPassesTestMixin, UpdateView):
     model = Series
     template_name = "polls/movie/series_create.html"
     form_class = SeriesForm
+
     # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
 
     def test_func(self):
@@ -189,6 +196,7 @@ class SeriesUpdate(UserPassesTestMixin, UpdateView):
 class SeriesVerify(UserPassesTestMixin, generic.DetailView):
     model = Series
     template_name = "polls/movie/series_verify.html"
+
     # success_url = reverse_lazy('series')
 
     def test_func(self):
@@ -201,6 +209,7 @@ class SeriesVerify(UserPassesTestMixin, generic.DetailView):
 class SeriesUnverify(UserPassesTestMixin, generic.DetailView):
     model = Series
     template_name = "polls/movie/series_unverify.html"
+
     # success_url = reverse_lazy('series')
 
     def test_func(self):
@@ -225,6 +234,7 @@ class ActorDelete(UserPassesTestMixin, DeleteView):
     model = Actor
     template_name = "polls/movie/actor_delete.html"
     success_url = reverse_lazy('actors')
+
     # login_url = reverse_lazy('index')
 
     def test_func(self):
@@ -238,6 +248,7 @@ class ActorCreate(UserPassesTestMixin, CreateView):
     model = Actor
     form_class = ActorForm
     template_name = "polls/movie/actor_create.html"
+
     # fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'specialisation']
 
     def test_func(self):
@@ -251,6 +262,7 @@ class ActorUpdate(UserPassesTestMixin, UpdateView):
     model = Actor
     template_name = "polls/movie/actor_create.html"
     form_class = ActorForm
+
     # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
 
     def test_func(self):
@@ -263,6 +275,7 @@ class ActorUpdate(UserPassesTestMixin, UpdateView):
 class ActorVerify(UserPassesTestMixin, generic.DetailView):
     model = Actor
     template_name = "polls/movie/actor_verify.html"
+
     # success_url = reverse_lazy('series')
 
     def test_func(self):
@@ -275,6 +288,7 @@ class ActorVerify(UserPassesTestMixin, generic.DetailView):
 class ActorUnverify(UserPassesTestMixin, generic.DetailView):
     model = Actor
     template_name = "polls/movie/actor_unverify.html"
+
     # success_url = reverse_lazy('series')
 
     def test_func(self):
@@ -312,6 +326,7 @@ class DirectorCreate(UserPassesTestMixin, CreateView):
     model = Director
     form_class = DirectorForm
     template_name = "polls/movie/director_create.html"
+
     # fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'amount_of_films']
 
     def test_func(self):
@@ -325,6 +340,7 @@ class DirectorUpdate(UserPassesTestMixin, UpdateView):
     model = Director
     template_name = "polls/movie/director_create.html"
     form_class = DirectorForm
+
     # fields = ['title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time']
 
     def test_func(self):
@@ -337,6 +353,7 @@ class DirectorUpdate(UserPassesTestMixin, UpdateView):
 class DirectorVerify(UserPassesTestMixin, generic.DetailView):
     model = Director
     template_name = "polls/movie/director_verify.html"
+
     # success_url = reverse_lazy('series')
 
     def test_func(self):
@@ -349,6 +366,7 @@ class DirectorVerify(UserPassesTestMixin, generic.DetailView):
 class DirectorUnverify(UserPassesTestMixin, generic.DetailView):
     model = Director
     template_name = "polls/movie/director_unverify.html"
+
     # success_url = reverse_lazy('series')
 
     def test_func(self):
@@ -471,6 +489,7 @@ class BookDelete(DeleteView):
     model = Book
     success_url = reverse_lazy('books')
 
+
 """
 def scrape(request):
     url = "https://www.imdb.com/chart/top"
@@ -544,31 +563,33 @@ def scrape_actors(request):
     return render(request, "polls/movie/scrape.html")
 """
 
+
 def scrape_movies(request):
     languages_pk = []
     start = time()
     url = "https://www.imdb.com/chart/top"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
-    table = soup.find('table',  {'class': 'chart full-width'})
+    table = soup.find('table', {'class': 'chart full-width'})
     movies_data = table.tbody.find_all('tr')
     movies = []
     for tr in movies_data:
         link = tr.td.a
-        url = "https://www.imdb.com"+link['href']
+        url = "https://www.imdb.com" + link['href']
         response = requests.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
         movie = soup.find('div', attrs={'class': 'ipc-page-grid ipc-page-grid--bias-left'})
 
         language_release_date = movie.find_all('section')[11]
         language_release_date = language_release_date.find('div', attrs={'class': 'sc-f65f65be-0 ktSkVi'})
-        language_release_date = language_release_date.find('ul', attrs={'class': 'ipc-metadata-list ipc-metadata-list--dividers-all ipc-metadata-list--base'})
+        language_release_date = language_release_date.find('ul', attrs={
+            'class': 'ipc-metadata-list ipc-metadata-list--dividers-all ipc-metadata-list--base'})
         language = language_release_date.find('li', attrs={'data-testid': 'title-details-languages'})
         languages = language.div.ul.find_all('li')
         language_release_date = language_release_date.find_all('li')
         release_date = language_release_date[0].div.ul.li.a.text.split(" ")
         release_date = " ".join(release_date[0:3])
-        #languages = language.div.ul.find_all('li')
+        # languages = language.div.ul.find_all('li')
         for li in languages:
             language = Language.objects.filter(name=li.a.text).first()
             if language:
@@ -577,13 +598,13 @@ def scrape_movies(request):
             else:
                 language_instance = Language.objects.create(name=li.a.text)
                 languages_pk.append(language_instance.pk)
-        running_time = movie.find('div', attrs={'class':'sc-94726ce4-3 eSKKHi'}).ul.find_all('li')
+        running_time = movie.find('div', attrs={'class': 'sc-94726ce4-3 eSKKHi'}).ul.find_all('li')
         running_time = running_time[2].text
         title = movie.find('div', attrs={'class': 'sc-94726ce4-2 khmuXj'}).h1.text
-        #name = movie.find('div', attrs={'class': 'sc-fa02f843-0 fjLeDR'}).ul.li.div.ul.li.a.text
-        #name = name.split()
-        #first_name = name[0]
-        #last_name = name[1]
+        # name = movie.find('div', attrs={'class': 'sc-fa02f843-0 fjLeDR'}).ul.li.div.ul.li.a.text
+        # name = name.split()
+        # first_name = name[0]
+        # last_name = name[1]
         directors = movie.find('div', attrs={'class': 'sc-fa02f843-0 fjLeDR'}).ul.li.div.ul
         try:
             directors = directors.find_all('li')
@@ -611,7 +632,7 @@ def scrape_movies(request):
                 last_name = name[1]
                 date_of_birth = director.find('div', attrs={'id': 'name-born-info'})
                 date_of_death = director.find('div', attrs={'id': 'name-death-info'})
-                #to jest do zmiany
+                # to jest do zmiany
                 amount_of_films = 10
 
                 if not date_of_birth:
@@ -633,22 +654,21 @@ def scrape_movies(request):
                     amount_of_films=amount_of_films
                 )
                 pk_list.append(director_instance.pk)
-        #specialisation = actor.a.span.text.replace('\n', '')
-        #date_of_birth = actor.find('div', attrs={'id': 'name-born-info'})
-        #date_of_death = actor.find('div', attrs={'id': 'name-death-info'})
+        # specialisation = actor.a.span.text.replace('\n', '')
+        # date_of_birth = actor.find('div', attrs={'id': 'name-born-info'})
+        # date_of_death = actor.find('div', attrs={'id': 'name-death-info'})
 
         if title:
             movies.append(title)
         movie_object = Movie.objects.create(title=title, date_of_release=release_date, running_time=running_time)
-        #movie_object = Movie.objects.create()
-        #movie_object.director = pk_list
+        # movie_object = Movie.objects.create()
+        # movie_object.director = pk_list
 
         movie_object.director.set(pk_list)
 
         break
     end = time()
     return render(request, "polls/movie/scrape_movies.html", {'movies': movies, 'time': end - start})
-
 
 
 """"
@@ -685,10 +705,8 @@ def scrape2(request):
 class GameCreate(CreateView):
     model = Game
     form_class = GameForm
-    #fields = ['title', 'developer', 'date_of_release', 'genre', 'mode', 'summary']
+    # fields = ['title', 'developer', 'date_of_release', 'genre', 'mode', 'summary']
     template_name = "polls/Game/game_form.html"
-
-
 
 
 class GameDetailView(generic.DetailView):
@@ -704,10 +722,13 @@ class GameUpdate(UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
     def handle_no_permission(self):
         return redirect('index')
-   # success_url = reverse_lazy('games')
-  #  template_name = "polls/Game/game_confirm_delete.html"
+
+
+# success_url = reverse_lazy('games')
+#  template_name = "polls/Game/game_confirm_delete.html"
 
 
 class GameDelete(UserPassesTestMixin, DeleteView):
@@ -717,8 +738,10 @@ class GameDelete(UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
     def handle_no_permission(self):
         return redirect('index')
+
 
 class GameListView(generic.ListView):
     model = Game
@@ -734,14 +757,15 @@ class GameListView(generic.ListView):
 
 class GameVerify(UserPassesTestMixin, generic.DetailView):
     model = Game
-    #login_url = '/polls/error401'
-    #redirect_field_name = None
+    # login_url = '/polls/error401'
+    # redirect_field_name = None
 
     template_name = "polls/Game/game_verify.html"
     success_url = reverse_lazy('games')
 
     def test_func(self):
         return self.request.user.is_superuser
+
     def handle_no_permission(self):
         return redirect('index')
 
@@ -753,6 +777,7 @@ class GameUnverify(UserPassesTestMixin, generic.DetailView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
     def handle_no_permission(self):
         return redirect('index')
 
@@ -762,6 +787,7 @@ class DeveloperDetailView(generic.DetailView):
     model = Developer
     template_name = 'polls/Game/developer_detail.html'
 
+
 class DeveloperDelete(UserPassesTestMixin, DeleteView):
     model = Developer
     success_url = reverse_lazy('developers')
@@ -769,6 +795,7 @@ class DeveloperDelete(UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
     def handle_no_permission(self):
         return redirect('index')
 
@@ -786,6 +813,7 @@ class DeveloperUpdate(UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
     def handle_no_permission(self):
         return redirect('index')
 
@@ -797,10 +825,11 @@ class DeveloperListView(generic.ListView):
 
 
 class PasswordsChangeView(PasswordChangeView):
-    #form_class = PasswordChangeForm #domyślne
-    form_class =  PasswordChangingForm #Nowe z forms.py
+    # form_class = PasswordChangeForm #domyślne
+    form_class = PasswordChangingForm  # Nowe z forms.py
     template_name = 'polls/Profile/change_password.html'
     success_url = reverse_lazy('password_success')
+
 
 def password_change_success(request):
     return render(request, 'polls/Profile/password_success.html')
@@ -816,6 +845,6 @@ class UserEditView(UserPassesTestMixin, generic.UpdateView):
 
     def test_func(self):
         return self.request.user.is_authenticated
+
     def handle_no_permission(self):
         return redirect('index')
-

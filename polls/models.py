@@ -44,13 +44,12 @@ class GameMode(models.Model):
         return self.name
 
 
-
 class Game(models.Model):
     """Model representing a game (but not a specific game)."""
     title = models.CharField(max_length=200)
     developer = models.ForeignKey('Developer', on_delete=models.SET_NULL, null=True)
     date_of_release = models.DateField(null=True, blank=True)
-    #game_image = models.ImageField(null = True, blank=True, upload_to="images/")
+    # game_image = models.ImageField(null = True, blank=True, upload_to="images/")
 
     genre = models.ManyToManyField(GameGenre, help_text='Select a genre for this game')
     mode = models.ManyToManyField(GameMode, help_text='Select which game mode is available')
@@ -71,13 +70,11 @@ class Game(models.Model):
         self.Verified = True
         self.save(update_fields=['Verified'])
         return self.Verified
+
     def Unverify(self, *args, **kwargs):
         self.Verified = False
         self.save(update_fields=['Verified'])
         return self.Verified
-
-
-
 
 
 class Book(models.Model):
@@ -261,8 +258,6 @@ class MovieSeriesGenre(models.Model):
         return self.name
 
 
-
-
 class Developer(models.Model):
     """Model representing an Developer."""
     company_name = models.CharField(max_length=100)
@@ -279,21 +274,20 @@ class Developer(models.Model):
         """String for representing the Model object."""
         return f'{self.company_name}'
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    #profile_image = models.ImageField(null = True, blank=True, upload_to="images/")
-    profile_image_url = models.TextField(max_length=100, null = True, blank=True)
+    # profile_image = models.ImageField(null = True, blank=True, upload_to="images/")
+    profile_image_url = models.TextField(max_length=100, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     profile_description = models.TextField(max_length=100, null=True, blank=True)
     signature = models.TextField(max_length=100, null=True, blank=True)
 
-
-
     def WhenJoined(self):
         return self.user.date_joined
+
     def LastSeen(self):
         return self.user.last_login
-
 
     Genders = (
         ('m', 'Male'),
@@ -302,7 +296,7 @@ class Profile(models.Model):
     )
 
     gender = models.CharField(max_length=1, choices=Genders, blank=True, default='u',
-        help_text='What is your gender',)
+                              help_text='What is your gender', )
 
     def __str__(self):
         return str(self.user)

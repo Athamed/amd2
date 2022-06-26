@@ -7,47 +7,48 @@ from .models import Game
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
 
+
 class EditUserForm(UserChangeForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    first_name = forms.CharField(max_length= 100, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    last_name = forms.CharField(max_length= 100, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    username = forms.CharField(max_length= 100, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    last_login = forms.CharField(max_length= 100, widget=forms.TextInput(attrs={'class': 'form-control'}))
-   # is_superuser = forms.CharField(max_length= 100, widget=forms.CheckboxInput(attrs={'class': 'form-check'}))
-   # is_staff = forms.CharField(max_length= 100, widget=forms.CheckboxInput(attrs={'class': 'form-check'}))
-   # is_active = forms.CharField(max_length= 100, widget=forms.CheckboxInput(attrs={'class': 'form-check'}))
-    date_joined = forms.CharField(max_length= 100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_login = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    # is_superuser = forms.CharField(max_length= 100, widget=forms.CheckboxInput(attrs={'class': 'form-check'}))
+    # is_staff = forms.CharField(max_length= 100, widget=forms.CheckboxInput(attrs={'class': 'form-check'}))
+    # is_active = forms.CharField(max_length= 100, widget=forms.CheckboxInput(attrs={'class': 'form-check'}))
+    date_joined = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = User
-        fields = ('username','first_name','last_name','email','password','last_login','date_joined')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'last_login', 'date_joined')
 
 
 class DateInput(forms.DateInput):
     input_type = 'date'
 
+
 class GameForm(forms.ModelForm):
     class Meta:
         model = Game
-        fields = ('title','developer','date_of_release','genre','mode','summary')
-       #fields = ('title','developer','date_of_release','genre','mode','summary','game_image')
+        fields = ('title', 'developer', 'date_of_release', 'genre', 'mode', 'summary')
+        # fields = ('title','developer','date_of_release','genre','mode','summary','game_image')
 
-        #fields = ('title','developer','date_of_release')
+        # fields = ('title','developer','date_of_release')
 
-        widgets ={'title':  forms.TextInput(attrs={'class': 'form-control','placeholder':'tytul'}),
-                 'developer': forms.Select(attrs={'class': 'form-control'}),
-                 'date_of_release': DateInput(),
-                 'genre': forms.SelectMultiple(attrs={'class': 'form-control'}),
-                 'mode': forms.SelectMultiple(attrs={'class': 'form-control'}),
-                 'summary': forms.Textarea(attrs={'class': 'form-control'}),
-                 }
-
+        widgets = {'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'tytul'}),
+                   'developer': forms.Select(attrs={'class': 'form-control'}),
+                   'date_of_release': DateInput(),
+                   'genre': forms.SelectMultiple(attrs={'class': 'form-control'}),
+                   'mode': forms.SelectMultiple(attrs={'class': 'form-control'}),
+                   'summary': forms.Textarea(attrs={'class': 'form-control'}),
+                   }
 
 
 class MovieForm(forms.ModelForm):
     class Meta:
         model = Movie
-        #fields = '__all__'
+        # fields = '__all__'
         fields = ('title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'running_time', 'summary')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'title'}),
@@ -56,16 +57,16 @@ class MovieForm(forms.ModelForm):
             'date_of_release': DateInput(),
             'language': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'genre': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'running_time': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Movie length in minutes'}),
+            'running_time': forms.NumberInput(
+                attrs={'class': 'form-control', 'placeholder': 'Movie length in minutes'}),
             'summary': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
-
         }
 
 
 class SeriesForm(forms.ModelForm):
     class Meta:
         model = Series
-        #fields = '__all__'
+        # fields = '__all__'
         fields = ('title', 'actors', 'director', 'date_of_release', 'language', 'genre', 'number_of_seasons', 'summary')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'title'}),
@@ -82,7 +83,7 @@ class SeriesForm(forms.ModelForm):
 class ActorForm(forms.ModelForm):
     class Meta:
         model = Actor
-        #fields = '__all__'
+        # fields = '__all__'
         fields = ('first_name', 'last_name', 'date_of_birth', 'date_of_death', 'specialisation')
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'first name'}),
@@ -96,7 +97,7 @@ class ActorForm(forms.ModelForm):
 class DirectorForm(forms.ModelForm):
     class Meta:
         model = Director
-        #fields = '__all__'
+        # fields = '__all__'
         fields = ('first_name', 'last_name', 'date_of_birth', 'date_of_death', 'amount_of_films')
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'first name'}),
@@ -110,7 +111,7 @@ class DirectorForm(forms.ModelForm):
 class RenewBookForm(forms.Form):
     """Form for a librarian to renew books."""
     renewal_date = forms.DateField(
-            help_text="Enter a date between now and 4 weeks (default 3).")
+        help_text="Enter a date between now and 4 weeks (default 3).")
 
     def clean_renewal_date(self):
         data = self.cleaned_data['renewal_date']
@@ -126,12 +127,14 @@ class RenewBookForm(forms.Form):
         # Remember to always return the cleaned data.
         return data
 
+
 class PasswordChangingForm(PasswordChangeForm):
-    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type':'password'}))
-    new_password1 = forms.CharField(max_length= 100, widget=forms.PasswordInput(attrs={'class': 'form-control','type':'password'}))
-    new_password2 = forms.CharField(max_length= 100, widget=forms.PasswordInput(attrs={'class': 'form-control','type':'password'}))
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
+    new_password1 = forms.CharField(max_length=100,
+                                    widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
+    new_password2 = forms.CharField(max_length=100,
+                                    widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
 
     class Meta:
         model = User
-        fields = ('old_password','new_password1','new_password2')
-
+        fields = ('old_password', 'new_password1', 'new_password2')
