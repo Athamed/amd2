@@ -20,10 +20,15 @@ from django.urls import reverse_lazy
 
 from polls.models import Author
 
-
-import requests
 from bs4 import BeautifulSoup
+import pandas as pd
+import requests
+from rest_framework import generics
+from bs4 import BeautifulSoup
+from urllib.request import urlopen, Request
 from time import time
+
+from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import PasswordChangeView
 from .forms import GameForm, EditUserForm, PasswordChangingForm
