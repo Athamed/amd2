@@ -11,8 +11,10 @@ from django.urls import reverse
 from polls.forms import RenewBookForm, MovieForm, SeriesForm, ActorForm, DirectorForm
 from .models import Book, Author, BookInstance
 from .models import Movie, Series, Actor, Director, Language
+from polls.forms import RenewBookForm
+from .models import Book, Author, BookInstance, Game, Developer
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
@@ -26,6 +28,10 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 from time import time
 
+from django.utils.decorators import method_decorator
+from django.shortcuts import render, redirect
+from django.contrib.auth.views import PasswordChangeView
+from .forms import GameForm, EditUserForm, PasswordChangingForm
 
 def index(request):
     """View function for home page of site."""
@@ -361,6 +367,7 @@ class BookDetailView(generic.DetailView):
     model = Book
 
 
+# @method_decorator(login_required, name='dispatch')
 class AuthorListView(generic.ListView):
     """Generic class-based list view for a list of authors."""
     model = Author
@@ -452,6 +459,7 @@ class AuthorDelete(DeleteView):
 class BookCreate(CreateView):
     model = Book
     fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
+    template_name = "polls/book_form.html"
 
 
 class BookUpdate(UpdateView):
@@ -672,3 +680,142 @@ def scrape2(request):
         # sleep(5)
     return render(request, "polls/movie/scrape.html", {'actors': vector})
 """
+
+
+class GameCreate(CreateView):
+    model = Game
+    form_class = GameForm
+    #fields = ['title', 'developer', 'date_of_release', 'genre', 'mode', 'summary']
+    template_name = "polls/Game/game_form.html"
+
+
+
+
+class GameDetailView(generic.DetailView):
+    """Generic class-based detail view for a game."""
+    model = Game
+    template_name = 'polls/Game/game_detail.html'
+
+
+class GameUpdate(UserPassesTestMixin, UpdateView):
+    model = Game
+    template_name = "polls/Game/game_form.html"
+    fields = ['title', 'developer', 'date_of_release', 'genre', 'mode', 'summary', 'Verified']
+
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
+   # success_url = reverse_lazy('games')
+  #  template_name = "polls/Game/game_confirm_delete.html"
+
+
+class GameDelete(UserPassesTestMixin, DeleteView):
+    model = Game
+    success_url = reverse_lazy('games')
+    template_name = "polls/Game/game_confirm_delete.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
+
+class GameListView(generic.ListView):
+    model = Game
+    paginate_by = 10
+    template_name = "polls/Game/game_list.html"
+
+    def get_context_data(self, *args, **kwargs):
+        game_list = Game.objects.order_by('title')
+        context = super(GameListView, self).get_context_data(*args, **kwargs)
+        context["game_list"] = game_list
+        return context
+
+
+class GameVerify(UserPassesTestMixin, generic.DetailView):
+    model = Game
+    #login_url = '/polls/error401'
+    #redirect_field_name = None
+
+    template_name = "polls/Game/game_verify.html"
+    success_url = reverse_lazy('games')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class GameUnverify(UserPassesTestMixin, generic.DetailView):
+    model = Game
+    template_name = "polls/Game/game_unverify.html"
+    success_url = reverse_lazy('games')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class DeveloperDetailView(generic.DetailView):
+    """Generic class-based detail view for a developer."""
+    model = Developer
+    template_name = 'polls/Game/developer_detail.html'
+
+class DeveloperDelete(UserPassesTestMixin, DeleteView):
+    model = Developer
+    success_url = reverse_lazy('developers')
+    template_name = "polls/Game/developer_confirm_delete.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class DeveloperCreate(CreateView):
+    model = Developer
+    fields = ['company_name', 'date_of_foundation']
+    template_name = "polls/Game/developer_form.html"
+
+
+class DeveloperUpdate(UserPassesTestMixin, UpdateView):
+    model = Developer
+    fields = ['company_name', 'date_of_foundation']
+    template_name = "polls/Game/developer_form.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+    def handle_no_permission(self):
+        return redirect('index')
+
+
+class DeveloperListView(generic.ListView):
+    model = Developer
+    paginate_by = 10
+    template_name = "polls/Game/developer_list.html"
+
+
+class PasswordsChangeView(PasswordChangeView):
+    #form_class = PasswordChangeForm #domyślne
+    form_class =  PasswordChangingForm #Nowe z forms.py
+    template_name = 'polls/Profile/change_password.html'
+    success_url = reverse_lazy('password_success')
+
+def password_change_success(request):
+    return render(request, 'polls/Profile/password_success.html')
+
+
+class UserEditView(UserPassesTestMixin, generic.UpdateView):
+    form_class = EditUserForm
+    success_url = reverse_lazy("index")
+    template_name = "polls/Game/edit_user.html"
+
+    def get_object(self):
+        return self.request.user
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+    def handle_no_permission(self):
+        return redirect('index')
+

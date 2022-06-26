@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <h1>Testing verifing games</h1>
+
+    <p>Your game <b>{{ game.title }}</b> is now
+
+        {% if game.Unverify == False %}
+            Unverified!
+        {% endif %}
+
+    </p>
+
+    <p><a href="{{ game.get_absolute_url }}">Go back</a> [Automatic return in 5 seconds]</p>
+
+
+    <meta http-equiv="refresh" content="5;url={{ game.get_absolute_url }}">
+{% endblock %}
