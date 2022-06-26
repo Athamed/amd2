@@ -10,13 +10,21 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from polls.forms import RenewBookForm, MovieForm, SeriesForm, ActorForm, DirectorForm
 from .models import Book, Author, BookInstance
-from .models import Movie, Series, Actor, Director
+from .models import Movie, Series, Actor, Director, Language
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from polls.models import Author
+
+from bs4 import BeautifulSoup
+import pandas as pd
+import requests
+from rest_framework import generics
+from bs4 import BeautifulSoup
+from urllib.request import urlopen, Request
+from time import time
 
 
 def index(request):
@@ -454,3 +462,213 @@ class BookUpdate(UpdateView):
 class BookDelete(DeleteView):
     model = Book
     success_url = reverse_lazy('books')
+
+"""
+def scrape(request):
+    url = "https://www.imdb.com/chart/top"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find('table',  {'class': 'chart full-width'})
+    rows = table.find_all('tr')
+    movies = []
+    for row in rows:
+        image = row.find('img')
+        if image:
+            movies.append(image['alt'])
+            Movie.objects.create(title=image['alt'], date_of_release='2020-10-10')
+    return render(request, "polls/movie/scrape_test.html", {'movies': movies})
+
+
+def scrape_actors(request):
+    url = "https://www.imdb.com/list/ls060678014/?sort=list_order,asc&mode=detail&page=1&ref_=nmls_vm_dtl"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    actors_data = soup.findAll('div', attrs={'class': 'lister-item mode-detail'})
+    # rows = table.find_all('tr')
+    actors = []
+    for actor_div in actors_data:
+        link = actor_div.h3.a
+        url2 = "https://www.imdb.com"+link['href']
+        response2 = requests.get(url2)
+        soup2 = BeautifulSoup(response2.content, "html.parser")
+        actor = soup2.find('div', attrs={'class': 'name-overview-widget'})
+
+        name = actor.h1.span.text
+        name = name.split()
+        first_name = name[0]
+        last_name = name[1]
+        specialisation = actor.a.span.text.replace('\n', '')
+        date_of_birth = actor.find('div', attrs={'id': 'name-born-info'})
+        date_of_death = actor.find('div', attrs={'id': 'name-death-info'})
+
+        if date_of_birth:
+            #actors.append(date_of_birth.time['datetime'])
+            Actor.objects.update_or_create(
+                first_name=first_name,
+                last_name=last_name,
+                #specialisation=specialisation,
+                #date_of_birth=date_of_birth.time['datetime'],
+                #date_of_death=date_of_death.time['datetime'],
+                #Verified=True,
+                defaults={
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'specialisation': specialisation,
+                    'date_of_birth': date_of_birth.time['datetime'],
+                    'Verified': True
+                }
+            )
+        else:
+            Actor.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                #specialisation=specialisation,
+                #date_of_birth=date_of_birth.time['datetime'],
+                #Verified=True,
+                defaults={
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'specialisation': specialisation,
+                    #'date_of_birth': date_of_birth.time['datetime'],
+                    'Verified': True
+                }
+            )
+    return render(request, "polls/movie/scrape.html")
+"""
+
+def scrape_movies(request):
+    languages_pk = []
+    start = time()
+    url = "https://www.imdb.com/chart/top"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    table = soup.find('table',  {'class': 'chart full-width'})
+    movies_data = table.tbody.find_all('tr')
+    movies = []
+    for tr in movies_data:
+        link = tr.td.a
+        url = "https://www.imdb.com"+link['href']
+        response = requests.get(url)
+        soup = BeautifulSoup(response.content, "html.parser")
+        movie = soup.find('div', attrs={'class': 'ipc-page-grid ipc-page-grid--bias-left'})
+
+        language_release_date = movie.find_all('section')[11]
+        language_release_date = language_release_date.find('div', attrs={'class': 'sc-f65f65be-0 ktSkVi'})
+        language_release_date = language_release_date.find('ul', attrs={'class': 'ipc-metadata-list ipc-metadata-list--dividers-all ipc-metadata-list--base'})
+        language = language_release_date.find('li', attrs={'data-testid': 'title-details-languages'})
+        languages = language.div.ul.find_all('li')
+        language_release_date = language_release_date.find_all('li')
+        release_date = language_release_date[0].div.ul.li.a.text.split(" ")
+        release_date = " ".join(release_date[0:3])
+        #languages = language.div.ul.find_all('li')
+        for li in languages:
+            language = Language.objects.filter(name=li.a.text).first()
+            if language:
+                language_pk = language.pk
+                languages_pk.append(language_pk)
+            else:
+                language_instance = Language.objects.create(name=li.a.text)
+                languages_pk.append(language_instance.pk)
+        running_time = movie.find('div', attrs={'class':'sc-94726ce4-3 eSKKHi'}).ul.find_all('li')
+        running_time = running_time[2].text
+        title = movie.find('div', attrs={'class': 'sc-94726ce4-2 khmuXj'}).h1.text
+        #name = movie.find('div', attrs={'class': 'sc-fa02f843-0 fjLeDR'}).ul.li.div.ul.li.a.text
+        #name = name.split()
+        #first_name = name[0]
+        #last_name = name[1]
+        directors = movie.find('div', attrs={'class': 'sc-fa02f843-0 fjLeDR'}).ul.li.div.ul
+        try:
+            directors = directors.find_all('li')
+        except AttributeError:
+            directors = directors.li
+        pk_list = []
+        for li in directors:
+            name = li.a.text
+            name = name.split()
+            first_name = name[0]
+            last_name = name[1]
+            director = Director.objects.filter(first_name=first_name, last_name=last_name).first()
+            if director:
+                director_pk = director.pk
+                pk_list.append(director_pk)
+            else:
+                link = li.a['href']
+                url = "https://www.imdb.com" + link
+                response = requests.get(url)
+                soup = BeautifulSoup(response.content, "html.parser")
+                director = soup.find('div', attrs={'class': 'name-overview-widget'})
+                name = director.h1.span.text
+                name = name.split()
+                first_name = name[0]
+                last_name = name[1]
+                date_of_birth = director.find('div', attrs={'id': 'name-born-info'})
+                date_of_death = director.find('div', attrs={'id': 'name-death-info'})
+                #to jest do zmiany
+                amount_of_films = 10
+
+                if not date_of_birth:
+                    date_of_birth = None
+                else:
+                    date_of_birth = date_of_birth.time['datetime']
+
+                if not date_of_death:
+                    date_of_death = None
+                else:
+                    date_of_death = date_of_death.time['datetime']
+
+                director_instance = Director.objects.create(
+                    first_name=first_name,
+                    last_name=last_name,
+                    date_of_birth=date_of_birth,
+                    date_of_death=date_of_death,
+                    Verified=True,
+                    amount_of_films=amount_of_films
+                )
+                pk_list.append(director_instance.pk)
+        #specialisation = actor.a.span.text.replace('\n', '')
+        #date_of_birth = actor.find('div', attrs={'id': 'name-born-info'})
+        #date_of_death = actor.find('div', attrs={'id': 'name-death-info'})
+
+        if title:
+            movies.append(title)
+        movie_object = Movie.objects.create(title=title, date_of_release=release_date, running_time=running_time)
+        #movie_object = Movie.objects.create()
+        #movie_object.director = pk_list
+
+        movie_object.director.set(pk_list)
+
+        break
+    end = time()
+    return render(request, "polls/movie/scrape_movies.html", {'movies': movies, 'time': end - start})
+
+
+
+""""
+def scrape2(request):
+    url = "https://www.imdb.com/list/ls060678014/"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    actors = soup.findAll('div', attrs={'class': 'lister-item mode-advanced'})
+    vector = []
+    # enumerate rows to include index inside class name
+    # starting index from 1
+    for actor in actors:
+        name = actor.h3.a.text
+        vector.append(name)
+        name = name.split()
+        first_name = name[0]
+        last_name = name[1]
+        specialisation = actor.find('p', class_='text-muted text-small').text
+
+        print({'first_name': first_name, 'last_name': last_name, 'specialisation': specialisation})
+
+        # create objects in database
+        Actor.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            specialisation=specialisation,
+        )
+        # sleep few seconds to avoid database block
+        # sleep(5)
+    return render(request, "polls/movie/scrape.html", {'actors': vector})
+"""

@@ -27,6 +27,11 @@ urlpatterns = [
     path('movie/<int:pk>/update', views.MovieUpdate.as_view(), name='movie-update'),
     path('movie/<int:pk>/verify', views.MovieVerify.as_view(), name='movie-verify'),
     path('movie/<int:pk>/unverify', views.MovieUnverify.as_view(), name='movie-unverify'),
+    #TO JEST PRAWDOPODOBNIE DO ZMIANY LUB WYWALENIA
+    #ZAKOMENTOWANE DLA BEZPIECZEŃSTWA BO TO WORK IN PROGRESS
+    #path('scrape/', views.scrape, name='scrape'),
+    #path('scrape/', views.scrape_actors, name='scrape'),
+    #path('scrapemovies/', views.scrape_movies, name='scrape-movies'),
 
     path('series/', views.SeriesListView.as_view(), name='series'),
     path('series/<int:pk>', views.SeriesDetailView.as_view(), name='series-detail'),
