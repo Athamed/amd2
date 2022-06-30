@@ -1,11 +1,13 @@
 import datetime
-from django.utils import timezone
+
+from django.contrib.auth.models import Permission  # Required to grant the permission needed to set a book as returned.
+from django.contrib.auth.models import User  # Required to assign User as a borrower
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
+
 from polls.models import Author
 from polls.models import BookInstance, Book, Genre, Language
-from django.contrib.auth.models import User  # Required to assign User as a borrower
-from django.contrib.auth.models import Permission  # Required to grant the permission needed to set a book as returned.
 
 
 class AuthorListViewTest(TestCase):

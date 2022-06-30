@@ -1,12 +1,25 @@
 from django.contrib import admin
-from .models import Author, Genre, Book, BookInstance, Language
+
+from .models import Author, Genre, Book, BookInstance, Language, Director, Actor, Movie, Series, MovieSeriesGenre
+from .models import GameGenre, GameMode, Developer, Game, Profile
 
 # admin.site.register(Author, AuthorAdmin)
 # admin.site.register(Book)
 # admin.site.register(Author)
 # admin.site.register(BookInstance)
 admin.site.register(Genre)
+admin.site.register(GameGenre)
+admin.site.register(GameMode)
+admin.site.register(Developer)
 admin.site.register(Language)
+admin.site.register(Game)
+admin.site.register(Profile)
+
+admin.site.register(Director)
+admin.site.register(Actor)
+admin.site.register(Movie)
+admin.site.register(Series)
+admin.site.register(MovieSeriesGenre)
 
 
 class BooksInline(admin.TabularInline):
