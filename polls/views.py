@@ -10,8 +10,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.views import generic
@@ -21,7 +20,7 @@ from polls.forms import RenewBookForm, MovieForm, SeriesForm, ActorForm, Directo
 from polls.models import Author
 from .forms import GameForm, EditUserForm, PasswordChangingForm
 from .models import Book, BookInstance
-from .models import Game, Developer
+from .models import Game, Developer, Profile
 from .models import Movie, Series, Actor, Director, Language, MovieSeriesGenre
 
 
@@ -314,6 +313,18 @@ class UserEditView(UserPassesTestMixin, generic.UpdateView):
 
     def handle_no_permission(self):
         return redirect('index')
+
+class ProfilePageView(generic.DetailView):
+    model = Profile
+    template_name = "polls/Profile/user_profile.html"
+
+    def get_context_data(self, *args, **kwargs):
+        #users = Profile.objects.all()
+        context = super(ProfilePageView, self).get_context_data(*args, **kwargs)
+
+        page_user = get_object_or_404(Profile, id=self.kwargs['pk'])
+        context["page_user"] = page_user
+        return context
 
 
 class MovieListView(generic.ListView):

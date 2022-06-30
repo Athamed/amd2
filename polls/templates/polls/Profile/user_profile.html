@@ -1,0 +1,41 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Profil użytkownika {{ page_user }}</h1>
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-md-2">
+                {% if page_user.profile_image_url %}
+                    <img src="{{ page_user.profile_image_url }} " class="card-img">
+                {% endif %}
+
+            </div>
+
+            <div class="col-md-10">
+                <div class="card-body"
+                <h5 class="card-title">
+                    Dołączył {{ page_user.user.date_joined.date }} | Ostatnio widziany {{ page_user.user.last_login.date }} | Płeć {{ page_user.gender }}
+                </h5>
+
+                <p class="small text-muted">
+                    {% if page_user.date_of_birth %}
+                        Urodzony {{ page_user.date_of_birth }}
+                    {% endif %}
+                </p>
+
+                            <p class="small text-muted">
+                    {% if profile_description.date_of_birth %}
+                        Opis {{ page_user.profile_description }}
+
+                    {% else %}
+                        Brak opisu
+                    {% endif %}
+
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
