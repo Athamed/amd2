@@ -727,26 +727,28 @@ def date_scraping(movie, months):
     # language_release_date = language_release_date.find_all('li')
     date = movie.find('li', attrs={'data-testid': 'title-details-releasedate'})
     link = date.div.ul.li.a
-    release_date = link.text.split(" ")
-    if len(release_date) == 4:
-        release_date = " ".join(release_date[0:3])
+    release_date = link.text.split(" (", 1)[0].split(" ")
+    if len(release_date) == 3:
+        release_date = " ".join(release_date)
         release_date = release_date.replace(",", "")
         release_date = release_date.split()
         release_date = release_date[2] + "-" + months[release_date[0]] + "-" + release_date[1]
-    if len(release_date) == 3:
+    else:
         link = link['href']
         url = "https://www.imdb.com" + link
         response = requests.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
         release_dates = soup.find_all('tr', attrs={'class': 'ipl-zebra-list__item release-date-item'})
         for date in release_dates:
-            date = date.find_all('td', attrs={'class': 'release-date-item__date'}).text.split(" ")
+            date = date.find('td', attrs={'class': 'release-date-item__date'}).text
+            date = date.replace("  ", "")
+            date = date.split(" ")
             if len(date) == 3:
                 release_date = date
                 break
         release_date = release_date[2] + "-" + months[release_date[1]] + "-" + release_date[0]
-    # if len(release_date[0]) == 1:
-        # release_date[0] = '0' + release_date[0]
+        # if len(release_date[0]) == 1:
+            # release_date[0] = '0' + release_date[0]
 
     return release_date
 
@@ -862,6 +864,6 @@ def scrape_movies(request):
         movie_object.actors.set(actors_pk)
         end = time()
         times.append(end - start)
-        if counter == 10:
+        if counter == 20:
             break
     return render(request, "polls/movie/scrape_movies.html", {'movies': movies, 'times': times})
