@@ -200,12 +200,12 @@ class Profile(models.Model):
         return self.user.last_login
 
     Genders = (
-        ('m', 'Male'),
-        ('f', 'Female'),
-        ('u', 'Undefined'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Undefined', 'Undefined'),
     )
 
-    gender = models.CharField(max_length=1, choices=Genders, blank=True, default='u',
+    gender = models.CharField(max_length=10, choices=Genders, blank=True, default='Undefined',
                               help_text='What is your gender', )
 
     def __str__(self):
