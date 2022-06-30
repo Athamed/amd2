@@ -188,7 +188,7 @@ class Developer(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     # profile_image = models.ImageField(null = True, blank=True, upload_to="images/")
-    profile_image_url = models.TextField(max_length=100, null=True, blank=True)
+    profile_image_url = models.TextField(max_length=100, null=True, blank=True, default="https://pbs.twimg.com/profile_images/1510045751803404288/W-AAI2EH_400x400.jpg")
     date_of_birth = models.DateField(null=True, blank=True)
     profile_description = models.TextField(max_length=100, null=True, blank=True)
     signature = models.TextField(max_length=100, null=True, blank=True)
