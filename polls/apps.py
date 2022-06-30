@@ -10,4 +10,4 @@ class UsersConfig(AppConfig):
     name = 'polls'
 
     def ready(self):
-        pass
+        import polls.signals
