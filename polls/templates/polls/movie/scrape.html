@@ -1,0 +1,12 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <div class="container">
+        {{ length }}
+        {% for actor in actors %}
+            {{ actor }}
+            <br>
+        {% endfor %}
+        <h1>DONE</h1>
+    </div>
+{% endblock %}

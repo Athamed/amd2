@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <h1>Developer List</h1>
+
+    {% if developer_list %}
+        <ul>
+
+            {% for developer in developer_list %}
+                <li>
+                    <a href="{{ developer.get_absolute_url }}">{{ developer }}</a>
+                    (Założone {{ developer.date_of_foundation }})
+                </li>
+            {% endfor %}
+
+        </ul>
+    {% else %}
+        <p>There are no developers available.</p>
+    {% endif %}
+
+
+
+{% endblock %}

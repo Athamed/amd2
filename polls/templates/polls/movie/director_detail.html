@@ -1,0 +1,38 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <h1> {{ director }} </h1>
+    <ul>
+        <li>Amount of films: {{ director.amount_of_films }}</li>
+        <li>Date of birth: {{ director.date_of_birth }}</li>
+        {% if director.date_of_death %}
+            <li>Date of death: {{ director.date_of_death }}</li>
+        {% endif %}
+        {% if director.Verified %}
+            <li>Status: verified</li>
+        {% else %}
+            <li>Status: not verified</li>
+        {% endif %}
+    </ul>
+    {% if user.is_superuser %}
+        <a href="{% url 'director-delete' pk=director.id %}">
+            <button>DELETE DIRECTOR</button>
+        </a>
+        <br>
+        {% if director.Verified %}
+            <a href="{% url 'director-unverify' pk=director.id %}">
+                <button>UNDO VERIFICATION</button>
+            </a>
+        {% else %}
+            <a href="{% url 'director-verify' pk=director.id %}">
+                <button>VERIFY</button>
+            </a>
+        {% endif %}
+        <br>
+        <a href="{% url 'director-update' pk=director.id %}">
+            <button>UPDATE</button>
+        </a>
+    {% endif %}
+
+{% endblock %}

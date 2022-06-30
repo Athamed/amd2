@@ -1,0 +1,15 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    {% if movie.unverified == False %}
+        <p>Movie <b>{{ movie.title }}</b> is now unverified!</p>
+        <a href="{{ movie.get_absolute_url }}">
+            <button>Go back to {{ movie }}</button>
+        </a>
+        <br>
+        <p>[Automatic return in 5 seconds]</p>
+
+        <meta http-equiv="refresh" content="5;url={{ movie.get_absolute_url }}">
+    {% endif %}
+
+{% endblock %}
