@@ -629,6 +629,29 @@ class DirectorUnverify(UserPassesTestMixin, generic.DetailView):
         return redirect('index')
 
 
+def get_date_actor_director(date_of_birth, date_of_death):
+    birth = [1, 1, 1]
+    if date_of_birth:
+        if date_of_birth.time:
+            date_of_birth = date_of_birth.time['datetime']
+            birth = date_of_birth.split("-")
+        else:
+            date_of_birth = None
+    if not date_of_birth or birth[0] == '0' or birth[1] == '0' or birth[2] == '0':
+        date_of_birth = None
+
+    death = [1, 1, 1]
+    if date_of_death:
+        if date_of_death.time:
+            date_of_death = date_of_death.time['datetime']
+            death = date_of_death.split("-")
+        else:
+            date_of_birth = None
+    if not date_of_death or birth[0] == '0' or death[1] == '0' or death[2] == '0':
+        date_of_death = None
+    return date_of_birth, date_of_death
+
+
 def actors_scraping(movie):
     pk_list = []
     actors = movie.find_all('div', attrs={'data-testid': 'title-cast-item'})
@@ -653,20 +676,7 @@ def actors_scraping(movie):
             specialisation = actor.find_all('span', attrs={'class': 'itemprop'})[1].text.replace('\n', '')
             date_of_birth = soup.find('div', attrs={'id': 'name-born-info'})
             date_of_death = soup.find('div', attrs={'id': 'name-death-info'})
-
-            birth = [1, 1, 1]
-            if date_of_birth:
-                date_of_birth = date_of_birth.time['datetime']
-                birth = date_of_birth.split("-")
-            if not date_of_birth or birth[1] == '0' or birth[2] == '0':
-                date_of_birth = None
-
-            death = [1, 1, 1]
-            if date_of_death:
-                date_of_death = date_of_death.time['datetime']
-                death = date_of_death.split("-")
-            if not date_of_death or death[1] == '0' or death[2] == '0':
-                date_of_death = None
+            date_of_birth, date_of_death = get_date_actor_director(date_of_birth, date_of_death)
 
             actor_instance = Actor.objects.create(
                 full_name=name,
@@ -705,19 +715,27 @@ def date_scraping(movie, months):
     # language_release_date = movie.find_all('section')[11]
     # language_release_date = language_release_date.find_all('li')
     date = movie.find('li', attrs={'data-testid': 'title-details-releasedate'})
-    link = date.div.ul.li.a['href']
-    # release_date = language_release_date[0].div.ul.li.a.text.split(" ")
-    # if len(release_date) == 4:
-    #   release_date = " ".join(release_date[0:3])
-    # if len(release_date) == 3:
-    # link = language_release_date[0].div.ul.li.a['href']
-    url = "https://www.imdb.com" + link
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, "html.parser")
-    release_date = soup.find('td', attrs={'class': 'release-date-item__date'}).text.split(" ")
-    if len(release_date[0]) == 1:
-        release_date[0] = '0' + release_date[0]
-    release_date = release_date[2] + "-" + months[release_date[1]] + "-" + release_date[0]
+    link = date.div.ul.li.a
+    release_date = link.text.split(" ")
+    if len(release_date) == 4:
+        release_date = " ".join(release_date[0:3])
+        release_date = release_date.replace(",", "")
+        release_date = release_date.split()
+        release_date = release_date[2] + "-" + months[release_date[0]] + "-" + release_date[1]
+    if len(release_date) == 3:
+        link = link['href']
+        url = "https://www.imdb.com" + link
+        response = requests.get(url)
+        soup = BeautifulSoup(response.content, "html.parser")
+        release_dates = soup.find_all('tr', attrs={'class': 'ipl-zebra-list__item release-date-item'})
+        for date in release_dates:
+            date = date.find_all('td', attrs={'class': 'release-date-item__date'}).text.split(" ")
+            if len(date) == 3:
+                release_date = date
+                break
+        release_date = release_date[2] + "-" + months[release_date[1]] + "-" + release_date[0]
+    # if len(release_date[0]) == 1:
+        # release_date[0] = '0' + release_date[0]
 
     return release_date
 
@@ -743,7 +761,7 @@ def directors_scraping(movie):
             url = "https://www.imdb.com" + link
             response = requests.get(url)
             soup = BeautifulSoup(response.content, "html.parser")
-            director = soup.find('div', attrs={'class': 'name-overview-widget'})
+            director = soup.find('div', attrs={'id': 'name-overview-widget'})
             # name = director.h1.span.text
             # name = name.split()
             # first_name = name[0]
@@ -752,20 +770,7 @@ def directors_scraping(movie):
             date_of_death = director.find('div', attrs={'id': 'name-death-info'})
             # to jest do zmiany
             amount_of_films = 10
-
-            birth = [1, 1, 1]
-            if date_of_birth:
-                date_of_birth = date_of_birth.time['datetime']
-                birth = date_of_birth.split("-")
-            if not date_of_birth or birth[1] == '0' or birth[2] == '0':
-                date_of_birth = None
-
-            death = [1, 1, 1]
-            if date_of_death:
-                date_of_death = date_of_death.time['datetime']
-                death = date_of_death.split("-")
-            if not date_of_death or death[1] == '0' or death[2] == '0':
-                date_of_death = None
+            date_of_birth, date_of_death = get_date_actor_director(date_of_birth, date_of_death)
 
             director_instance = Director.objects.create(
                 full_name=name,
@@ -846,6 +851,6 @@ def scrape_movies(request):
         movie_object.actors.set(actors_pk)
         end = time()
         times.append(end - start)
-        if counter == 1:
+        if counter == 10:
             break
     return render(request, "polls/movie/scrape_movies.html", {'movies': movies, 'times': times})
