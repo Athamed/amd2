@@ -30,7 +30,9 @@
                     {% if user.is_authenticated %}
                         <li>User: <a href="{% url 'profile-page' user.id %}">{{ user.get_username }}</a></li>
                         <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li>
-                        <li><a href="{% url 'edit_user' %}">Edit my Profile</a></li>
+                        <li><a href="{% url 'edit_user' %}">Edit User</a></li>
+                        <li><a href="{% url 'edit_profile' %}">Edit my Profile</a></li>
+
                         <li><a href="{% url 'logout' %}?next={{ request.path }}">Logout</a></li>
                         <hr>
                         <li><a href="{% url 'game-create' %}">Create game</a></li>

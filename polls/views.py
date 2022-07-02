@@ -16,7 +16,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from polls.forms import RenewBookForm, MovieForm, SeriesForm, ActorForm, DirectorForm
+from polls.forms import RenewBookForm, MovieForm, SeriesForm, ActorForm, DirectorForm, UserProfileEditForm
 from polls.models import Author
 from .forms import GameForm, EditUserForm, PasswordChangingForm
 from .models import Book, BookInstance
@@ -311,6 +311,18 @@ class UserEditView(UserPassesTestMixin, generic.UpdateView):
     def test_func(self):
         return self.request.user.is_authenticated
 
+class UserProfileEditView(UserPassesTestMixin, generic.UpdateView):
+    model = Profile
+    form_class = UserProfileEditForm
+    success_url = reverse_lazy("index")
+    template_name = "polls/Game/edit_profile.html"
+
+    def get_object(self):
+        return self.request.user.profile
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+
     def handle_no_permission(self):
         return redirect('index')
 
@@ -323,8 +335,27 @@ class ProfilePageView(generic.DetailView):
         context = super(ProfilePageView, self).get_context_data(*args, **kwargs)
 
         page_user = get_object_or_404(Profile, id=self.kwargs['pk'])
+
+        liked = False
+        if page_user.likes.filter(id=self.request.user.id).exists():
+            liked = True
+
         context["page_user"] = page_user
+        context["liked"] = liked
         return context
+
+def LikeView(request, pk):
+   profile = get_object_or_404(Profile, id=request.POST.get('profile_id'))
+   liked = False
+   if profile.likes.filter(id=request.user.id).exists():
+       profile.likes.remove(request.user)
+       liked = False
+   else:
+       profile.likes.add(request.user)
+       liked = True
+
+   return HttpResponseRedirect(reverse('profile-page', args=[str(pk)]))
+
 
 
 class MovieListView(generic.ListView):

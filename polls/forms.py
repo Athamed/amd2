@@ -7,9 +7,11 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from .models import Game
+from .models import Game, Profile
 from .models import Movie, Series, Actor, Director
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 class EditUserForm(UserChangeForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
@@ -26,9 +28,20 @@ class EditUserForm(UserChangeForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password', 'last_login', 'date_joined')
 
+class UserProfileEditForm(forms.ModelForm):
+    profile_image_url = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    date_of_birth = forms.DateInput()
+    profile_description = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    signature = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
+    class Meta:
+        model = Profile
+        fields = ('profile_image_url', 'date_of_birth', 'profile_description', 'signature', 'gender')
+        widgets = {
+            'date_of_birth': DateInput(attrs={'max': datetime.datetime.now().strftime("%Y-%m-%d")}),
+        }
+
+
 
 
 class GameForm(forms.ModelForm):

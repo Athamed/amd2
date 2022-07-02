@@ -60,6 +60,9 @@ class Game(models.Model):
     summary = models.TextField(max_length=1000, help_text='Enter a brief description of the game')
     Verified = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['title']
+
     def __str__(self):
         """String for representing the Model object."""
         return self.title
@@ -192,7 +195,7 @@ class Profile(models.Model):
     date_of_birth = models.DateField(null=True, blank=True)
     profile_description = models.TextField(max_length=100, null=True, blank=True)
     signature = models.TextField(max_length=100, null=True, blank=True)
-
+    likes = models.ManyToManyField(User, related_name="blog_posts")
     def WhenJoined(self):
         return self.user.date_joined
 
@@ -205,7 +208,7 @@ class Profile(models.Model):
         ('Undefined', 'Undefined'),
     )
 
-    gender = models.CharField(max_length=10, choices=Genders, blank=True, default='Undefined',
+    gender = models.CharField(max_length=10, choices=Genders, default='Undefined',
                               help_text='What is your gender', )
 
     def __str__(self):

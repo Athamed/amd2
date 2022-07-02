@@ -2,6 +2,19 @@
 
 {% block content %}
     <h1>Profil użytkownika {{ page_user }}</h1>
+    {{ page_user.likes.count }}
+    {{liked}}
+    {% if user.is_authenticated %}
+    <form action="{% url 'like_profile' profile.pk%}" method="POST">
+        {% csrf_token %}
+        {% if liked %}
+            <button type="submit", name="profile_id", value="{{ profile.id }}", class="btn btn-danger btn-sm">Unlike</button>
+        {% else %}
+            <button type="submit", name="profile_id", value="{{ profile.id }}", class="btn btn-primary btn-sm">Like</button>
+        {% endif %}
+
+    </form>
+    {% endif %}
     <div class="card mb-3">
         <div class="row no-gutters">
             <div class="col-md-2">
@@ -24,7 +37,7 @@
                 </p>
 
                             <p class="small text-muted">
-                    {% if profile_description.date_of_birth %}
+                    {% if page_user.profile_description %}
                         Opis {{ page_user.profile_description }}
 
                     {% else %}

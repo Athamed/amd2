@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import SignUpView, UserEditView, PasswordsChangeView, ProfilePageView
+from .views import SignUpView, UserEditView, PasswordsChangeView, ProfilePageView, LikeView, UserProfileEditView
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -14,7 +14,10 @@ urlpatterns = [
 
     path("signup/", SignUpView.as_view(), name="signup"),
     path("edit_user/", UserEditView.as_view(), name="edit_user"),
+    path("edit_profile/", UserProfileEditView.as_view(), name="edit_profile"),
+
     path("profile/<int:pk>", ProfilePageView.as_view(), name="profile-page"),
+    path("like/<int:pk>", LikeView, name="like_profile"),
 
     path('book/<uuid:pk>/renew/', views.renew_book_librarian, name='renew-book-librarian'),
     path('author/create/', views.AuthorCreate.as_view(), name='author-create'),

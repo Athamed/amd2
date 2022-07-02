@@ -8,10 +8,10 @@
     {{ user.profile.WhenJoined }}
     {{ user.profile.LastSeen }}
 
-    <h2>Edit user - dosłownie model usera edytujemy</h2>
+    <h2>Edit profilu użytkownika</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Update user</button>
+        <button type="submit">Update profile</button>
     </form>
 {% endblock %}
