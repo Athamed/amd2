@@ -2,7 +2,7 @@ import datetime
 from time import time
 
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -708,16 +708,22 @@ def actors_scraping(movie):
             director_pk = actor.pk
             pk_list.append(director_pk)
         else:
+            #start = time()
             link = actor_div.find('a', attrs={'data-testid': 'title-cast-item__actor'})
             url = "https://www.imdb.com" + link['href']
             response = requests.get(url)
-            soup = BeautifulSoup(response.content, "html.parser")
-            actor = soup.find('div', attrs={'id': 'name-overview-widget'})
 
+            #soup = BeautifulSoup(response.content, "html.parser")
+            #actor = soup.find('div', attrs={'id': 'name-overview-widget'})
+
+            only_item_cells = SoupStrainer('div', attrs={'id': 'name-overview-widget'})
+            actor = BeautifulSoup(response.content, 'lxml', parse_only=only_item_cells)
+
+            #end = time() - start
             # specialisation = actor.a.span.text.replace('\n', '')
             specialisation = actor.find_all('span', attrs={'class': 'itemprop'})[1].text.replace('\n', '')
-            date_of_birth = soup.find('div', attrs={'id': 'name-born-info'})
-            date_of_death = soup.find('div', attrs={'id': 'name-death-info'})
+            date_of_birth = actor.find('div', attrs={'id': 'name-born-info'})
+            date_of_death = actor.find('div', attrs={'id': 'name-death-info'})
             date_of_birth, date_of_death = get_date_actor_director(date_of_birth, date_of_death)
 
             actor_instance = Actor.objects.create(
@@ -804,8 +810,13 @@ def directors_scraping(movie):
             link = li.a['href']
             url = "https://www.imdb.com" + link
             response = requests.get(url)
-            soup = BeautifulSoup(response.content, "html.parser")
-            director = soup.find('div', attrs={'id': 'name-overview-widget'})
+
+            #soup = BeautifulSoup(response.content, "html.parser")
+            #director = soup.find('div', attrs={'id': 'name-overview-widget'})
+
+            only_item_cells = SoupStrainer('div', attrs={'id': 'name-overview-widget'})
+            director = BeautifulSoup(response.content, 'lxml', parse_only=only_item_cells)
+
             # name = director.h1.span.text
             # name = name.split()
             # first_name = name[0]
@@ -852,11 +863,20 @@ def scrape_movies(request):
     counter = 0
     months = {"January": "01", "February": "02", "March": "03", "April": "04", "May": "05", "June": "06", "July": "07",
               "August": "08", "September": "09", "October": "10", "November": "11", "December": "12"}
+    start = time()
     url = "https://www.imdb.com/chart/top"
     response = requests.get(url)
-    soup = BeautifulSoup(response.content, "lxml")
-    table = soup.find('table', {'class': 'chart full-width'})
-    movies_data = table.tbody.find_all('tr')
+    #soup = BeautifulSoup(response.content, "lxml")
+    #end = time()
+    #start = end - start
+    #table = soup.find('table', {'class': 'chart full-width'})
+
+    #only_item_cells = SoupStrainer("table", attrs={'class': 'chart full-width'})
+    only_item_cells = SoupStrainer("tbody", attrs={'class': 'lister-list'})
+    table = BeautifulSoup(response.content, 'lxml', parse_only=only_item_cells)
+    end = time()
+    start = end - start
+    movies_data = table.find_all('tr')
     movies = []
     for tr in movies_data:
         start = time()
