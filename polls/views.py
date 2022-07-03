@@ -895,6 +895,6 @@ def scrape_movies(request):
         movie_object.actors.set(actors_pk)
         end = time()
         times.append(end - start)
-        if counter == 20:
+        if counter == 1:
             break
     return render(request, "polls/movie/scrape_movies.html", {'movies': movies, 'times': times})
