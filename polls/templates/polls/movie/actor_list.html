@@ -1,0 +1,33 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+    {% if actor_list %}
+        <h1>Actors list</h1>
+        <ul>
+            {% for actor in actor_list %}
+                {% if actor.Verified %}
+                    <li>
+                        <a href="{{ actor.get_absolute_url }}">{{ actor }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        {% if user.is_superuser %}
+            <h1>Actors to verify</h1>
+            <ul>
+                {% for actor in actor_list %}
+                    {% if not actor.Verified %}
+                        <li>
+                            <a href="{{ actor.get_absolute_url }}">{{ actor }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+    {% else %}
+        <p>There are no actors</p>
+    {% endif %}
+{% endblock %}

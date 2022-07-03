@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    {% if user.profile.profile_image_url %}
+        <img src="{{ user.profile.profile_image_url }} ">
+    {% endif %}
+
+    {{ user.profile.WhenJoined }}
+    {{ user.profile.LastSeen }}
+
+    <h2>Edit user - dosłownie model usera edytujemy</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update user</button>
+    </form>
+{% endblock %}

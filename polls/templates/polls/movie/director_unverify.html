@@ -1,0 +1,15 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    {% if director.unverified == False %}
+        <p>Director <b>{{ actor.title }}</b> is now unverified!</p>
+        <a href="{{ director.get_absolute_url }}">
+            <button>Go back to {{ director }}</button>
+        </a>
+        <br>
+        <p>[Automatic return in 5 seconds]</p>
+
+        <meta http-equiv="refresh" content="5;url={{ director.get_absolute_url }}">
+    {% endif %}
+
+{% endblock %}

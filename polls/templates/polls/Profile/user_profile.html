@@ -1,0 +1,54 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Profil użytkownika {{ page_user }}</h1>
+    {{ page_user.likes.count }}
+    {{liked}}
+    {% if user.is_authenticated %}
+    <form action="{% url 'like_profile' profile.pk%}" method="POST">
+        {% csrf_token %}
+        {% if liked %}
+            <button type="submit", name="profile_id", value="{{ profile.id }}", class="btn btn-danger btn-sm">Unlike</button>
+        {% else %}
+            <button type="submit", name="profile_id", value="{{ profile.id }}", class="btn btn-primary btn-sm">Like</button>
+        {% endif %}
+
+    </form>
+    {% endif %}
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-md-2">
+                {% if page_user.profile_image_url %}
+                    <img src="{{ page_user.profile_image_url }} " class="card-img">
+                {% endif %}
+
+            </div>
+
+            <div class="col-md-10">
+                <div class="card-body"
+                <h5 class="card-title">
+                    Dołączył {{ page_user.user.date_joined.date }} | Ostatnio widziany {{ page_user.user.last_login.date }} | Płeć {{ page_user.gender }}
+                </h5>
+
+                <p class="small text-muted">
+                    {% if page_user.date_of_birth %}
+                        Urodzony {{ page_user.date_of_birth }}
+                    {% endif %}
+                </p>
+
+                            <p class="small text-muted">
+                    {% if page_user.profile_description %}
+                        Opis {{ page_user.profile_description }}
+
+                    {% else %}
+                        Brak opisu
+                    {% endif %}
+
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

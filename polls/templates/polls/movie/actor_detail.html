@@ -1,0 +1,38 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <h1> {{ actor }} </h1>
+    <ul>
+        <li>Specialisation: {{ actor.specialisation }}</li>
+        <li>Date of birth: {{ actor.date_of_birth }}</li>
+        {% if actor.date_of_death %}
+            <li>Date of death: {{ actor.date_of_death }}</li>
+        {% endif %}
+        {% if actor.Verified %}
+            <li>Status: verified</li>
+        {% else %}
+            <li>Status: not verified</li>
+        {% endif %}
+    </ul>
+    {% if user.is_superuser %}
+        <a href="{% url 'actor-delete' pk=actor.id %}">
+            <button>DELETE ACTOR</button>
+        </a>
+        <br>
+        {% if actor.Verified %}
+            <a href="{% url 'actor-unverify' pk=actor.id %}">
+                <button>UNDO VERIFICATION</button>
+            </a>
+        {% else %}
+            <a href="{% url 'actor-verify' pk=actor.id %}">
+                <button>VERIFY</button>
+            </a>
+        {% endif %}
+        <br>
+        <a href="{% url 'actor-update' pk=actor.id %}">
+            <button>UPDATE</button>
+        </a>
+    {% endif %}
+
+{% endblock %}
