@@ -56,7 +56,7 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Movies
+            Movies&TVs
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="{% url 'actors' %}">All actors</a></li>
@@ -67,11 +67,35 @@
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Profile
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'profile-page' user.id %}">{{ user.get_username }}</a></li>
+            <li><a class="dropdown-item" href="{% url 'my-borrowed' %}">My Borrowed</a></li>
+            <li><a class="dropdown-item" href="{% url 'edit_user' %}">Edit User</a></li>
+            <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit my Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}?next={{ request.path }}">Logout</a></li>
+          </ul>
+        </li>
+        {% endif %}
           <!--
         <li class="nav-item">
           <a class="nav-link disabled">Disabled</a>
         </li>
           -->
+        <li class="nav-item">
+            <ul class="nav" aria-labelledby="navbarSupportedContent">
+                {% if user.is_authenticated %}
+                {% else %}
+                        <li><a class="btn" href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
+                        <li><a class="btn" href="{% url 'signup' %}?next={{ request.path }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </li>
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -86,22 +110,13 @@
             {% block sidebar %}
                 <ul class="sidebar-nav">
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'game-create' %}">Create game</a></li>
-                        <li><a href="{% url 'developer-create' %}">Create developer</a></li>
+                        <li><a class="btn" href="{% url 'game-create' %}">Create game</a></li>
+                        <li><a class="btn" href="{% url 'developer-create' %}">Create developer</a></li>
                         <hr style="width:100px">
-                        <li><a href="{% url 'movie-create' %}"> Create movie</a></li>
-                        <li><a href="{% url 'series-create' %}"> Create series</a></li>
-                        <li><a href="{% url 'actor-create' %}"> Create actor</a></li>
-                        <li><a href="{% url 'director-create' %}"> Create director</a></li>
-                        <hr style="width:100px">
-                        <li>User: <a href="{% url 'profile-page' user.id %}">{{ user.get_username }}</a></li>
-                        <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li>
-                        <li><a href="{% url 'edit_user' %}">Edit User</a></li>
-                        <li><a href="{% url 'edit_profile' %}">Edit my Profile</a></li>
-                        <li><a href="{% url 'logout' %}?next={{ request.path }}">Logout</a></li>
-                    {% else %}
-                        <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
-                        <li><a href="{% url 'signup' %}?next={{ request.path }}">Register</a></li>
+                        <li><a class="btn" href="{% url 'movie-create' %}"> Create movie</a></li>
+                        <li><a class="btn" href="{% url 'series-create' %}"> Create series</a></li>
+                        <li><a class="btn" href="{% url 'actor-create' %}"> Create actor</a></li>
+                        <li><a class="btn" href="{% url 'director-create' %}"> Create director</a></li>
                     {% endif %}
                 </ul>
             {% endblock %}
